@@ -27,6 +27,7 @@
     "@types/node": "^22.15.6",
     "cross-env": "^7.0.3",
     "nodemon": "^3.1.10",
+    "prettier": "^3.5.3",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   },

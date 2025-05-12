@@ -14,15 +14,20 @@ app.use(morganMiddleware);
 
 // Middleware
 app.use(
-  cors({
-    origin: process.env.FRONTEND_URL ?? "http://localhost:3000",
-    credentials: true,
-  })
+    cors({
+        origin: process.env.FRONTEND_URL ?? "http://localhost:3000",
+        credentials: true,
+    })
 );
 app.use(cookieParser());
 app.use(express.json());
 
+// Routes
+app.get("/", (req, res) => {
+    res.send("Hello World");
+});
+
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
