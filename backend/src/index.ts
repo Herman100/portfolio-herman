@@ -4,9 +4,10 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import logger from "./middlewares/logger.js";
 import morganMiddleware from "./middlewares/morganHelper.js";
+import { app } from "./app.js";
 
 // Configure app
-const app = express();
+
 dotenv.config();
 const PORT = process.env.PORT ?? 3000;
 
