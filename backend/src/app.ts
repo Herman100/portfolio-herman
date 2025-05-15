@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import morganMiddleware from "./middlewares/morganHelper.js";
+import morganMiddleware from "./middleware/morgan.middleware.js";
 
 const app = express();
 app.use(
