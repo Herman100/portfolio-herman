@@ -16,4 +16,10 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(morganMiddleware);
 
+// Import routes
+import healthcheckRoutes from "./routes/healthcheck.routes.js";
+
+// using routes
+app.use("/api/v1/healthcheck", healthcheckRoutes);
+
 export { app };
