@@ -18,8 +18,10 @@ app.use(morganMiddleware);
 
 // Import routes
 import healthcheckRoutes from "./routes/healthcheck.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 // using routes
 app.use("/api/v1/healthcheck", healthcheckRoutes);
+app.use("/api/v1/admin", adminRoutes);
 
 export { app };

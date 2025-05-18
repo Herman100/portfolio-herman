@@ -12,8 +12,9 @@ import {
 import bcrypt from "bcryptjs";
 import { AuthRequest } from "../types/jwt.types.js";
 import { verifyRefreshToken } from "../middleware/jwt.middleware.js";
+import { RequestWithCookies } from "../types/cookies.js";
 
-const authController = {
+const adminController = {
     // Register a new admin
     register: asyncHandler(
         async (req: Request, res: Response): Promise<void> => {
@@ -103,8 +104,17 @@ const authController = {
 
     // Refresh token
     refreshToken: asyncHandler(
-        async (req: AuthRequest, res: Response): Promise<void> => {
+        async (req: RequestWithCookies, res: Response): Promise<void> => {
+            console.log(req.cookies);
             const { refreshToken } = req.cookies;
+
+            if (!refreshToken) {
+                throw new ApiErrorHandler(
+                    401,
+                    "Refresh token is required",
+                    "Authentication Error"
+                );
+            }
 
             // Verify the refresh token
             const decoded = verifyRefreshToken(refreshToken);
@@ -176,4 +186,4 @@ const authController = {
         }
     ),
 };
-export default authController;
+export default adminController;

@@ -1,9 +1,4 @@
 import dotenv from "dotenv";
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import logger from "./middlewares/logger.js";
-import morganMiddleware from "./middlewares/morganHelper.js";
 import { app } from "./app.js";
 import { connectDB } from "./db/index.js";
 
