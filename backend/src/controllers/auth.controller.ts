@@ -38,18 +38,6 @@ const authController = {
                 password: hashedPassword,
                 role,
             });
-            // Generate access and refresh tokens
-            const accessToken = generateAccessToken({
-                email: newAdmin.email,
-                role: newAdmin.role,
-            });
-            const refreshToken = generateRefreshToken({
-                email: newAdmin.email,
-                role: newAdmin.role,
-            });
-
-            // Save the refresh token in the database
-            newAdmin.refreshToken = refreshToken;
 
             await newAdmin.save();
 
@@ -57,9 +45,7 @@ const authController = {
             res.status(201).json(
                 new ApiResponse(
                     201,
-                    {
-                        accessToken,
-                    },
+                    "Admin registered successfully",
                     "Admin registered successfully"
                 )
             );
@@ -99,23 +85,26 @@ const authController = {
             role: admin.role,
         });
 
+        // Update the admin's refresh token in the database
+        admin.refreshToken = refreshToken;
+        await admin.save();
+
         // Send response
         res.status(200).json(
-            new ApiResponse({
-                statusCode: 200,
-                data: {
+            new ApiResponse(
+                200,
+                {
                     accessToken,
-                    refreshToken,
                 },
-                message: "Admin logged in successfully",
-            })
+                "Admin logged in successfully"
+            )
         );
     }),
 
     // Refresh token
     refreshToken: asyncHandler(
         async (req: AuthRequest, res: Response): Promise<void> => {
-            const { refreshToken } = req.body;
+            const { refreshToken } = req.cookies;
 
             // Verify the refresh token
             const decoded = verifyRefreshToken(refreshToken);
@@ -132,17 +121,16 @@ const authController = {
                 email: decoded.email,
                 role: decoded.role,
             });
-            const newRefreshToken = generateRefreshToken({
-                email: decoded.email,
-                role: decoded.role,
-            });
 
             // Send response
             res.status(200).json(
-                ApiResponse.success("Tokens refreshed successfully", {
-                    accessToken,
-                    refreshToken: newRefreshToken,
-                })
+                new ApiResponse(
+                    200,
+                    {
+                        accessToken,
+                    },
+                    "Tokens refreshed successfully"
+                )
             );
         }
     ),
@@ -150,7 +138,7 @@ const authController = {
     // Logout admin
     logout: asyncHandler(
         async (req: AuthRequest, res: Response): Promise<void> => {
-            const { refreshToken } = req.body;
+            const { refreshToken } = req.cookies;
 
             // Verify the refresh token
             const decoded = verifyRefreshToken(refreshToken);
@@ -162,9 +150,28 @@ const authController = {
                 );
             }
 
+            // Find the admin by email
+            const admin = await Admin.findOne({ email: decoded.email });
+            if (!admin) {
+                throw new ApiErrorHandler(
+                    404,
+                    "Admin not found",
+                    "Logout Error"
+                );
+            }
+            // Clear the refresh token in the database
+            admin.refreshToken = "";
+            await admin.save();
+
             // Send response
+            res.clearCookie("refreshToken", {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+            });
+
             res.status(200).json(
-                ApiResponse.success("Admin logged out successfully")
+                new ApiResponse(200, null, "Admin logged out successfully")
             );
         }
     ),
