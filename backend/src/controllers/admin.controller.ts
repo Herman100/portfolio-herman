@@ -1,10 +1,8 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Request, Response } from "express";
-
 import { Admin } from "../models/admin.model.js";
 import { ApiErrorHandler } from "../utils/ApiErrorHandler.js";
-
 import {
     generateAccessToken,
     generateRefreshToken,
@@ -12,7 +10,6 @@ import {
 import bcrypt from "bcryptjs";
 import { verifyRefreshToken } from "../middleware/jwt.middleware.js";
 import { RequestWithCookies } from "../types/cookies.js";
-import mongoose from "mongoose";
 
 const adminController = {
     // Register a new admin
@@ -116,7 +113,6 @@ const adminController = {
     // Refresh token
     refreshToken: asyncHandler(
         async (req: RequestWithCookies, res: Response): Promise<void> => {
-            console.log(req.cookies);
             const { refreshToken } = req.cookies;
 
             if (!refreshToken) {
@@ -195,9 +191,6 @@ const adminController = {
     // Get admin profile
     getProfile: asyncHandler(
         async (req: Request, res: Response): Promise<void> => {
-            // Find the admin by email
-            console.log(req.user);
-
             const id = req.user?._id;
 
             if (!id) {
