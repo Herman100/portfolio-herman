@@ -6,7 +6,7 @@ import { ApiErrorHandler } from "../utils/ApiErrorHandler.js";
 import {
     generateAccessToken,
     generateRefreshToken,
-} from "../middleware/auth.middleware.js";
+} from "../middleware/admin.middleware.js";
 import bcrypt from "bcryptjs";
 import { verifyRefreshToken } from "../middleware/jwt.middleware.js";
 
