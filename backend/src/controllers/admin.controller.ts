@@ -9,7 +9,6 @@ import {
 } from "../middleware/auth.middleware.js";
 import bcrypt from "bcryptjs";
 import { verifyRefreshToken } from "../middleware/jwt.middleware.js";
-import { RequestWithCookies } from "../types/cookies.js";
 
 const adminController = {
     // Register a new admin
@@ -18,7 +17,7 @@ const adminController = {
             const { name, email, password, role } = req.body;
 
             // Check if the admin already exists
-            const existingAdmin = await Admin.findOne({ email });
+            const existingAdmin = await Admin.findOne({ role: "admin" });
             if (existingAdmin) {
                 throw new ApiErrorHandler(
                     400,
