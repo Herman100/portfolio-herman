@@ -95,7 +95,7 @@ const adminController = {
         // Set the refresh token in the cookies
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            // secure: process.env.NODE_ENV === "production", // secure in production
+            secure: process.env.NODE_ENV === "production", // secure in production
             sameSite: "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
             path: "/",
@@ -176,7 +176,7 @@ const adminController = {
         if (!admin) {
             throw new ApiErrorHandler(404, "Admin not found", "Logout Error");
         }
-        // Clear the refresh token in the database
+
         admin.refreshToken = "";
         await admin.save();
 
