@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { AuthRequest, RefreshTokenPayload } from "../types/jwt.types.js";
 import mongoose from "mongoose";
+import { RefreshTokenPayload } from "../types/jwt.types.js";
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ const refresh_secret =
 
 // Generate a JWT token
 export const generateAccessToken = (payload: {
-    _id: mongoose.Schema.Types.ObjectId;
+    _id: mongoose.Types.ObjectId;
     email: string;
     role: string;
 }) => {
@@ -25,7 +25,7 @@ export const generateAccessToken = (payload: {
 };
 
 export const generateRefreshToken = (payload: {
-    _id: mongoose.Schema.Types.ObjectId;
+    _id: mongoose.Types.ObjectId;
     email: string;
     role: string;
 }) => {
@@ -48,7 +48,7 @@ export const verifyRefreshToken = (
 
 // Verify JWT token middleware
 export const verifyAccessToken = (
-    req: AuthRequest,
+    req: Request,
     res: Response,
     next: NextFunction
 ) => {
@@ -78,7 +78,7 @@ export const verifyAccessToken = (
         }
 
         // Verify and decode the token
-        const decoded = jwt.verify(token, access_secret) as AuthRequest["user"];
+        const decoded = jwt.verify(token, access_secret) as Request["user"];
 
         console.log("Decoded JWT:", decoded);
 

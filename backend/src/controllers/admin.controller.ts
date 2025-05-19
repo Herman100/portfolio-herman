@@ -10,9 +10,9 @@ import {
     generateRefreshToken,
 } from "../middleware/auth.middleware.js";
 import bcrypt from "bcryptjs";
-import { AuthRequest } from "../types/jwt.types.js";
 import { verifyRefreshToken } from "../middleware/jwt.middleware.js";
 import { RequestWithCookies } from "../types/cookies.js";
+import mongoose from "mongoose";
 
 const adminController = {
     // Register a new admin
@@ -78,9 +78,9 @@ const adminController = {
 
         // Generate access and refresh tokens
         const accessToken = generateAccessToken({
+            _id: admin._id,
             email: admin.email,
             role: admin.role,
-            _id: admin._id,
         });
         const refreshToken = generateRefreshToken({
             email: admin.email,
@@ -158,59 +158,58 @@ const adminController = {
     ),
 
     // Logout admin
-    logout: asyncHandler(
-        async (req: AuthRequest, res: Response): Promise<void> => {
-            const { refreshToken } = req.cookies;
+    logout: asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const { refreshToken } = req.cookies;
 
-            // Verify the refresh token
-            const decoded = verifyRefreshToken(refreshToken);
-            if (!decoded) {
-                throw new ApiErrorHandler(
-                    401,
-                    "Invalid refresh token",
-                    "Logout Error"
-                );
-            }
-
-            // Find the admin by email
-            const admin = await Admin.findOne({ email: decoded.email });
-            if (!admin) {
-                throw new ApiErrorHandler(
-                    404,
-                    "Admin not found",
-                    "Logout Error"
-                );
-            }
-            // Clear the refresh token in the database
-            admin.refreshToken = "";
-            await admin.save();
-
-            // Send response
-            res.clearCookie("refreshToken", {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
-            });
-
-            res.status(200).json(
-                new ApiResponse(200, null, "Admin logged out successfully")
+        // Verify the refresh token
+        const decoded = verifyRefreshToken(refreshToken);
+        if (!decoded) {
+            throw new ApiErrorHandler(
+                401,
+                "Invalid refresh token",
+                "Logout Error"
             );
         }
-    ),
+
+        // Find the admin by email
+        const admin = await Admin.findOne({ email: decoded.email });
+        if (!admin) {
+            throw new ApiErrorHandler(404, "Admin not found", "Logout Error");
+        }
+        // Clear the refresh token in the database
+        admin.refreshToken = "";
+        await admin.save();
+
+        // Send response
+        res.clearCookie("refreshToken", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        });
+
+        res.status(200).json(
+            new ApiResponse(200, null, "Admin logged out successfully")
+        );
+    }),
 
     // Get admin profile
     getProfile: asyncHandler(
         async (req: Request, res: Response): Promise<void> => {
             // Find the admin by email
+            console.log(req.user);
 
-            if (!req.user?._id) {
+            const id = req.user?._id;
+
+            if (!id) {
                 throw new ApiErrorHandler(
                     401,
                     "Unauthorized",
                     "Get Profile Error"
                 );
             }
-            const admin = await Admin.findById(req.user?._id);
+            const admin = await Admin.findById(id).select(
+                "-password -refreshToken"
+            );
             if (!admin) {
                 throw new ApiErrorHandler(
                     404,
