@@ -112,7 +112,7 @@ const adminController = {
 
     // Refresh token
     refreshToken: asyncHandler(
-        async (req: RequestWithCookies, res: Response): Promise<void> => {
+        async (req: Request, res: Response): Promise<void> => {
             const { refreshToken } = req.cookies;
 
             if (!refreshToken) {
