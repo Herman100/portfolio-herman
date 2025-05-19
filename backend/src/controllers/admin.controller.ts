@@ -80,10 +80,12 @@ const adminController = {
         const accessToken = generateAccessToken({
             email: admin.email,
             role: admin.role,
+            _id: admin._id,
         });
         const refreshToken = generateRefreshToken({
             email: admin.email,
             role: admin.role,
+            _id: admin._id,
         });
 
         // Update the admin's refresh token in the database
@@ -139,6 +141,7 @@ const adminController = {
             const accessToken = generateAccessToken({
                 email: decoded.email,
                 role: decoded.role,
+                _id: decoded._id,
             });
 
             // Send response
@@ -191,6 +194,37 @@ const adminController = {
 
             res.status(200).json(
                 new ApiResponse(200, null, "Admin logged out successfully")
+            );
+        }
+    ),
+
+    // Get admin profile
+    getProfile: asyncHandler(
+        async (req: Request, res: Response): Promise<void> => {
+            // Find the admin by email
+
+            if (!req.user?._id) {
+                throw new ApiErrorHandler(
+                    401,
+                    "Unauthorized",
+                    "Get Profile Error"
+                );
+            }
+            const admin = await Admin.findById(req.user?._id);
+            if (!admin) {
+                throw new ApiErrorHandler(
+                    404,
+                    "Admin not found",
+                    "Get Profile Error"
+                );
+            }
+
+            res.status(200).json(
+                new ApiResponse(
+                    200,
+                    admin,
+                    "Admin profile retrieved successfully"
+                )
             );
         }
     ),

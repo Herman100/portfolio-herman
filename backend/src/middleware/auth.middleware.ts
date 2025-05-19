@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { AuthRequest, RefreshTokenPayload } from "../types/jwt.types.js";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -13,16 +14,18 @@ const refresh_secret =
 
 // Generate a JWT token
 export const generateAccessToken = (payload: {
+    _id: mongoose.Schema.Types.ObjectId;
     email: string;
     role: string;
 }) => {
     return jwt.sign(payload, access_secret, {
         algorithm: "HS256",
-        expiresIn: "30s",
+        expiresIn: "15m",
     });
 };
 
 export const generateRefreshToken = (payload: {
+    _id: mongoose.Schema.Types.ObjectId;
     email: string;
     role: string;
 }) => {
@@ -44,7 +47,7 @@ export const verifyRefreshToken = (
 };
 
 // Verify JWT token middleware
-export const verifyToken = (
+export const verifyAccessToken = (
     req: AuthRequest,
     res: Response,
     next: NextFunction
@@ -68,18 +71,16 @@ export const verifyToken = (
 
         // Extract the token
         const token = authHeader.split(" ")[1];
+        console.log("Extracted JWT:", token);
 
         if (!token) {
             return res.status(401).json({ message: "Token missing" });
         }
 
         // Verify and decode the token
-        const decoded = jwt.verify(token, access_secret) as {
-            email: string;
-            role: string;
-            iat?: number;
-            exp?: number;
-        };
+        const decoded = jwt.verify(token, access_secret) as AuthRequest["user"];
+
+        console.log("Decoded JWT:", decoded);
 
         // Attach user data to request object for use in route handlers
         req.user = decoded;
