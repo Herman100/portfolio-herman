@@ -9,7 +9,9 @@ export default function Home() {
       <div className="mt-8">
         <ThemeModeToggle />
       </div>
-      <Button className="mt-4">Get Started</Button>
+      <Button className="mt-4 " variant="default">
+        Get Started
+      </Button>
     </main>
   );
 }
