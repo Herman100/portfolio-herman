@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeProvider } from "@/compoents/theme-provider";
+import { ThemeProvider } from "@/compoents/themes/theme-provider";
 
 export const metadata: Metadata = {
   title: "Herman Kwamebour | Portfolio",
