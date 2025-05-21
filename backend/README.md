@@ -100,6 +100,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👤 Contact
 
-Your Name - [@herman-kwamebour](https://twitter.com/hermanskray) - hermankwamebour30@.com
+Author me! - [@herman-kwamebour](https://twitter.com/hermanskray) - hermankwamebour30@gmail.com
 
-Project Link: [https://github.com/Herman100/portfolio-herman-backend](https://github.com/Herman100/portfolio-herman-backend)
+Project Link: [https://github.com/Herman100/portfolio-herman-backend](https://github.com/Herman100/portfolio-herman)

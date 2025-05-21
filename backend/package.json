@@ -1,42 +1,47 @@
 {
-  "name": "Portfolio  of Herman Kwamebour",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/index.js",
-    "dev": "nodemon --watch src --ext ts,json --exec \"node --import tsx src/index.ts\"",
-    "dev:simple": "cross-env NODE_ENV=development node --import tsx src/index.ts",
-    "build": "tsc --outDir dist",
-    "build:dev": "tsc --outDir dist --watch"
-  },
-  "repository": {
-    "type": "git"
-  },
-  "keywords": [],
-  "author": "Herman Kwamebour",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/cookie-parser": "^1.4.8",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.5",
-    "@types/morgan": "^1.9.9",
-    "@types/node": "^22.15.6",
-    "cross-env": "^7.0.3",
-    "nodemon": "^3.1.10",
-    "tsx": "^4.19.4",
-    "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0",
-    "winston": "^3.17.0"
-  }
+    "name": "Portfolio  of Herman Kwamebour",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node dist/index.js",
+        "dev": "nodemon --watch src --ext ts,json --exec \"node --import tsx src/index.ts\"",
+        "dev:simple": "cross-env NODE_ENV=development node --import tsx src/index.ts",
+        "build": "tsc --outDir dist",
+        "build:dev": "tsc --outDir dist --watch"
+    },
+    "repository": {
+        "type": "git"
+    },
+    "keywords": [],
+    "author": "Herman Kwamebour",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/cookie-parser": "^1.4.8",
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/jsonwebtoken": "^9.0.5",
+        "@types/morgan": "^1.9.9",
+        "@types/node": "^22.15.6",
+        "cross-env": "^7.0.3",
+        "nodemon": "^3.1.10",
+        "prettier": "^3.5.3",
+        "tsx": "^4.19.4",
+        "typescript": "^5.8.3"
+    },
+    "dependencies": {
+        "bcryptjs": "^3.0.2",
+        "cookie-parser": "^1.4.7",
+        "cors": "^2.8.5",
+        "dotenv": "^16.5.0",
+        "express": "^5.1.0",
+        "joi": "^17.13.3",
+        "jsonwebtoken": "^9.0.2",
+        "mongoose": "^8.14.2",
+        "mongoose-aggregate-paginate-v2": "^1.1.4",
+        "morgan": "^1.10.0",
+        "winston": "^3.17.0"
+    }
 }
