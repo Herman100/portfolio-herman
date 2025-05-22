@@ -1,4 +1,7 @@
-import { ThemeModeToggle } from "@/compoents/themes/theme-toggle";
+import {
+  ThemeModeToggle,
+  ThemeSwitcher,
+} from "@/compoents/themes/theme-toggle";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -8,6 +11,7 @@ export default function Home() {
       <p className="mt-4 text-lg">Welcome to my portfolio website.</p>
       <div className="mt-8">
         <ThemeModeToggle />
+        <ThemeSwitcher />
       </div>
       <Button className="mt-4 " variant="default">
         Get Started
