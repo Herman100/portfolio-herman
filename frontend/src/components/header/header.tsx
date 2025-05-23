@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ThemeSwitcher } from "../themes/theme-toggle";
 import { cn } from "@/lib/utils";
 import { NavLink } from "../home/navlink";
+import { usePathname } from "next/navigation";
 
 interface NavItem {
   href: string;
@@ -51,19 +52,17 @@ const defaultNavItems = {
   ],
 };
 
-export default function NavHeader({
-  currentPage = "home",
-  customNavItems,
-  className,
-  showBrand = false,
-  brandText = "Herman Kwamebour",
-}: NavHeaderProps) {
+export default function NavHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const currentPage =
+    pathname === "/"
+      ? "home"
+      : (pathname.replace("/", "") as "about" | "contact");
 
   // Get navigation items based on current page or use custom items
-  const navItems =
-    customNavItems || defaultNavItems[currentPage] || defaultNavItems.home;
+  const navItems = defaultNavItems[currentPage] || defaultNavItems.home;
 
   // Handle scroll effect for sticky header
   useEffect(() => {
@@ -97,19 +96,11 @@ export default function NavHeader({
         "sticky top-0 z-50 w-full transition-all duration-300",
         isScrolled
           ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border/40"
-          : "bg-transparent",
-        className
+          : "bg-transparent"
       )}
     >
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between py-4 lg:py-6">
-          {/* Brand/Logo */}
-          {showBrand && (
-            <div className="flex items-center">
-              <NavLink href="/">{brandText}</NavLink>
-            </div>
-          )}
-
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center justify-center gap-1 lg:gap-4 flex-1">
             {navItems.map((item) => (
@@ -146,17 +137,6 @@ export default function NavHeader({
               <SheetContent side="right" className="w-80 sm:w-96">
                 <div className="flex flex-col space-y-6 mt-8">
                   {/* Mobile Brand */}
-                  {showBrand && (
-                    <div className="pb-4 border-b border-border">
-                      <NavLink
-                        href="/"
-                        onClick={handleNavClick}
-                        className="text-2xl font-bold text-primary"
-                      >
-                        {brandText}
-                      </NavLink>
-                    </div>
-                  )}
 
                   {/* Mobile Navigation Links */}
                   <div className="flex flex-col space-y-2">
@@ -175,7 +155,7 @@ export default function NavHeader({
                   {/* Mobile Footer */}
                   <div className="pt-6 mt-auto border-t border-border">
                     <p className="text-sm text-muted-foreground text-center">
-                      © 2024 {brandText}
+                      © 2024 Herman Kwamebour. All rights reserved.
                     </p>
                   </div>
                 </div>

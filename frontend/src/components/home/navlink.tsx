@@ -17,7 +17,7 @@ const NavLink = ({ className, href, children }: NavLinkProps) => {
   return (
     <Link
       href={href}
-      className={` ${className}
+      className={` 
         relative
         text-sm
         px-4 py-1
@@ -29,7 +29,7 @@ const NavLink = ({ className, href, children }: NavLinkProps) => {
         ease-in-out
         ${
           isActive
-            ? "bg-primary text-white shadow-md"
+            ? "bg-primary text-white shadow-md "
             : "text-foreground/80 hover:text-primary hover:bg-primary/5"
         }
         focus:outline-none
