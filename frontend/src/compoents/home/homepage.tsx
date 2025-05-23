@@ -17,50 +17,46 @@ import {
 import { useState } from "react";
 import Link from "next/link";
 import { ThemeSwitcher } from "../themes/theme-toggle";
+import { lavishlyYours } from "@/lib/fonts/font";
+import { NavLink } from "./navlink";
 
 export default function HomePage() {
   const [showCV, setShowCV] = useState(false);
+  const [activeUrl, SetActiveUrl] = useState("");
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
       <header className="container mx-auto py-6">
-        <nav className="flex items-center justify-between">
-          <div className="flex items-center space-x-8">
-            <a
-              href="#work"
-              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
-            >
-              Work
-            </a>
-            <a
-              href="#projects"
-              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
-            >
-              Projects
-            </a>
-            <a
-              href="#skills"
-              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
-            >
-              Skills
-            </a>
-            <a
-              href="#education"
-              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
-            >
-              Education
-            </a>
-          </div>
-          <div className="flex items-center gap-4">
-            <a
-              href="#contact"
-              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
-            >
-              Contact
-            </a>
+        <nav className="flex items-center justify-center gap-8 ">
+          <NavLink href="#work">Work</NavLink>
+          <Link
+            href="#projects"
+            className="text-m font-medium text-foreground/80 hover:text-primary transition-colors"
+          >
+            Projects
+          </Link>
+          <Link
+            href="#skills"
+            className="text-m font-medium text-foreground/80 hover:text-primary transition-colors"
+          >
+            Skills
+          </Link>
+          <Link
+            href="#education"
+            className="text-m font-medium text-foreground/80 hover:text-primary transition-colors"
+          >
+            Education
+          </Link>
+          <Link
+            href="#contact"
+            className="text-m font-medium text-foreground/80 hover:text-primary transition-colors"
+          >
+            Contact
+          </Link>
 
-            <ThemeSwitcher />
-          </div>
+          <ThemeSwitcher />
+          {/* </div> */}
         </nav>
       </header>
 
@@ -68,7 +64,10 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold text-primary">
+            {/* <h1 className="text-4xl md:text-6xl font-bold text-primary"> */}
+            <h1
+              className={`${lavishlyYours.className} text-4xl md:text-6xl font-bold text-primary`}
+            >
               I'm Herman.
             </h1>
             <p className="text-lg text-foreground">
