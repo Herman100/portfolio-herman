@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { lavishlyYours } from "@/lib/fonts/font";
-import { NavLink } from "@/compoents/home/navlink";
-import { ThemeSwitcher } from "@/compoents/themes/theme-toggle";
-import Footer from "@/compoents/footer/footer";
+import { NavLink } from "@/components/home/navlink";
+import { ThemeSwitcher } from "@/components/themes/theme-toggle";
+import Footer from "@/components/footer/footer";
 
 export default function AboutPage() {
   return (

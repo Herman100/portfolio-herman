@@ -1,8 +1,8 @@
-import HomePage from "@/compoents/home/homepage";
+import HomePage from "@/components/home/homepage";
 import {
   ThemeModeToggle,
   ThemeSwitcher,
-} from "@/compoents/themes/theme-toggle";
+} from "@/components/themes/theme-toggle";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {

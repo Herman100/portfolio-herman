@@ -20,11 +20,13 @@ import { ThemeSwitcher } from "../themes/theme-toggle";
 import { lavishlyYours } from "@/lib/fonts/font";
 import { NavLink } from "./navlink";
 import Footer from "../footer/footer";
+import NavHeader from "../header/header";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
+      <NavHeader />
       <header className="container mx-auto py-6">
         <nav className="flex items-center justify-center gap-4">
           <NavLink href="/">Home</NavLink>

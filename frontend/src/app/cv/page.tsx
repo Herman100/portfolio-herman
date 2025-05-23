@@ -22,7 +22,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import Link from "next/link";
-import { ThemeSwitcher } from "@/compoents/themes/theme-toggle";
+import { ThemeSwitcher } from "@/components/themes/theme-toggle";
 
 export default function CurriculumVitae() {
   return (
