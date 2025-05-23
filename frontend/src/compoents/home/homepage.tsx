@@ -29,7 +29,7 @@ export default function HomePage() {
       {/* Navigation */}
       <header className="container mx-auto py-6">
         <nav className="flex items-center justify-center gap-8 ">
-          <NavLink href="#work">Work</NavLink>
+          <NavLink href={"/"}>Work</NavLink>
           <Link
             href="#projects"
             className="text-m font-medium text-foreground/80 hover:text-primary transition-colors"
