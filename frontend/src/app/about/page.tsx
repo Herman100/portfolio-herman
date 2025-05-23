@@ -16,23 +16,10 @@ import Link from "next/link";
 import { lavishlyYours } from "@/lib/fonts/font";
 import { NavLink } from "@/components/home/navlink";
 import { ThemeSwitcher } from "@/components/themes/theme-toggle";
-import Footer from "@/components/footer/footer";
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <header className="container mx-auto py-6">
-        <nav className="flex items-center justify-center gap-4">
-          <NavLink href="/">Home</NavLink>
-          <NavLink href="/about">About</NavLink>
-          <NavLink href="#intro">Introduction</NavLink>
-          <NavLink href="#education">Education</NavLink>
-          <NavLink href="/contact">Contact</NavLink>
-          <ThemeSwitcher />
-        </nav>
-      </header>
-
       <main className="container mx-auto px-4 py-12 space-y-24">
         {/* Hero Section */}
         <section className="text-center space-y-8" id="intro">
@@ -261,9 +248,6 @@ export default function AboutPage() {
           </div>
         </section>
       </main>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

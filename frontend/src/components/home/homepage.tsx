@@ -3,51 +3,23 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowRight,
-  Code,
-  Database,
-  Globe,
-  Zap,
-  Mail,
-  Phone,
-  Github,
-  Linkedin,
-} from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, Code, Database, Globe, Zap } from "lucide-react";
 import Link from "next/link";
-import { ThemeSwitcher } from "../themes/theme-toggle";
 import { lavishlyYours } from "@/lib/fonts/font";
 import { NavLink } from "./navlink";
-import Footer from "../footer/footer";
-import NavHeader from "../header/header";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <NavHeader />
-      <header className="container mx-auto py-6">
-        <nav className="flex items-center justify-center gap-4">
-          <NavLink href="/">Home</NavLink>
-          <NavLink href="/about">About</NavLink>
-          <NavLink href="#projects">Projects</NavLink>
-          <NavLink href="#experience">Experience</NavLink>
-          <NavLink href="#skills">Skills</NavLink>
-          <NavLink href="/contact">Contact</NavLink>
-          <ThemeSwitcher />
-        </nav>
-      </header>
-
       <main className="container mx-auto px-4 py-12 space-y-24">
         {/* Hero Section */}
         <section className="grid grid-cols-1 items-center text-center w-[300px] md:w-[600px] mx-auto">
           <div className="space-y-6 flex flex-col items-center">
             <h1
-              className={`${lavishlyYours.className} text-4xl md:text-8xl font-bold text-primary`}
+              className={`${lavishlyYours.className} text-4xl md:text-8xl font-bold text-primary hover:text-primary/80 transition-all duration-300`}
             >
-              <Code className="h-16 w-16 mx-auto mb-4 text-primary" />
-              I'm Herman.
+              <Code className="h-16 w-16 mx-auto mb-4 text-primary hover:text-primary/80 transition-all duration-300" />
+              Hello. I'm Herman.
             </h1>
             <p className="text-lg text-foreground">
               I'm a Geoscientist & Fullstack Engineer building scalable software
@@ -67,11 +39,11 @@ export default function HomePage() {
 
         {/* Projects Section */}
         <section className="space-y-12" id="projects">
-          <h2 className="text-3xl font-bold text-foreground">
+          <h2 className="text-3xl font-bold text-foreground text-center">
             Featured Projects
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300">
+            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300  hover:scale-108">
               <CardContent className="p-8">
                 <div className="flex items-center gap-3 mb-4">
                   <Zap className="h-8 w-8 text-primary" />
@@ -91,7 +63,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300">
+            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-108">
               <CardContent className="p-8">
                 <div className="flex items-center gap-3 mb-4">
                   <Globe className="h-8 w-8 text-primary" />
@@ -111,7 +83,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300">
+            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-108">
               <CardContent className="p-8">
                 <div className="flex items-center gap-3 mb-4">
                   <Database className="h-8 w-8 text-primary" />
@@ -222,11 +194,11 @@ export default function HomePage() {
 
         {/* Skills Section */}
         <section className="space-y-12" id="skills">
-          <h2 className="text-3xl font-bold text-foreground">
+          <h2 className="text-3xl font-bold text-foreground text-center">
             Technical Arsenal
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="bg-card/50 border-0 shadow-md">
+            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-108">
               <CardContent className="p-8 text-center">
                 <Code className="h-12 w-12 mx-auto mb-4 text-primary" />
                 <h3 className="text-xl font-bold mb-4">Languages</h3>
@@ -239,7 +211,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/50 border-0 shadow-md">
+            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-108">
               <CardContent className="p-8 text-center">
                 <Zap className="h-12 w-12 mx-auto mb-4 text-primary" />
                 <h3 className="text-xl font-bold mb-4">Frameworks</h3>
@@ -253,7 +225,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/50 border-0 shadow-md">
+            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-108">
               <CardContent className="p-8 text-center">
                 <Database className="h-12 w-12 mx-auto mb-4 text-primary" />
                 <h3 className="text-xl font-bold mb-4">Tools & Systems</h3>
@@ -289,9 +261,6 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

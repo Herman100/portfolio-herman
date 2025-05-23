@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/themes/theme-provider";
 import Head from "next/head";
+import NavHeader from "@/components/header/header";
+import Footer from "@/components/footer/footer";
 
 export const metadata: Metadata = {
   title: "Herman Kwamebour | Portfolio",
@@ -43,7 +45,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <NavHeader />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
