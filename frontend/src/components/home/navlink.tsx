@@ -7,7 +7,7 @@ interface NavLinkProps {
   href: string;
   children: React.ReactNode;
   className?: string;
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent) => void;
 }
 
 const NavLink = ({ className, href, children }: NavLinkProps) => {

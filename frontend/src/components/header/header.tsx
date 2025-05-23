@@ -3,7 +3,13 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { ThemeSwitcher } from "../themes/theme-toggle";
 import { cn } from "@/lib/utils";
 import { NavLink } from "../home/navlink";
@@ -80,14 +86,20 @@ export default function NavHeader() {
   };
 
   // Handle smooth scrolling for hash links
-  const handleHashLink = (href: string) => {
+  const handleHashLink = (href: string, e?: React.MouseEvent) => {
+    // Always close the mobile menu first
+    setIsOpen(false);
+
     if (href.startsWith("#")) {
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+      e?.preventDefault();
+      // Add a small delay to allow the sheet to close first
+      setTimeout(() => {
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 150);
     }
-    handleNavClick();
   };
 
   return (
@@ -107,7 +119,7 @@ export default function NavHeader() {
               <NavLink
                 key={item.href}
                 href={item.href}
-                onClick={() => handleHashLink(item.href)}
+                onClick={(e: any) => handleHashLink(item.href, e)}
                 className="px-3 py-2 text-sm lg:text-base font-medium text-foreground/80 hover:text-primary transition-colors rounded-md hover:bg-muted/50"
               >
                 {item.label}
@@ -131,26 +143,31 @@ export default function NavHeader() {
                   className="h-10 w-10"
                   aria-label="Toggle navigation menu"
                 >
-                  <Menu className="h-5 w-5" />
+                  <Menu className="h-5 w-5" onClick={handleNavClick} />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80 sm:w-96">
+                <SheetHeader>
+                  <SheetTitle>Navigation Menu</SheetTitle>
+                </SheetHeader>
                 <div className="flex flex-col space-y-6 mt-8">
-                  {/* Mobile Brand */}
-
                   {/* Mobile Navigation Links */}
-                  <div className="flex flex-col space-y-2">
+                  <nav
+                    className="flex flex-col space-y-2"
+                    role="navigation"
+                    aria-label="Mobile navigation"
+                  >
                     {navItems.map((item) => (
                       <NavLink
                         key={item.href}
                         href={item.href}
-                        onClick={() => handleHashLink(item.href)}
+                        onClick={(e) => handleHashLink(item.href, e)}
                         className="flex items-center px-4 py-3 text-lg font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-colors"
                       >
                         {item.label}
                       </NavLink>
                     ))}
-                  </div>
+                  </nav>
 
                   {/* Mobile Footer */}
                   <div className="pt-6 mt-auto border-t border-border">
@@ -167,29 +184,3 @@ export default function NavHeader() {
     </header>
   );
 }
-
-// Export individual navigation configurations for easy use
-export const navConfigs = {
-  home: [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "#projects", label: "Projects" },
-    { href: "#experience", label: "Experience" },
-    { href: "#skills", label: "Skills" },
-    { href: "/contact", label: "Contact" },
-  ],
-  about: [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "#intro", label: "Introduction" },
-    { href: "#education", label: "Education" },
-    { href: "/contact", label: "Contact" },
-  ],
-  contact: [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
-    { href: "#get-in-touch", label: "Get In Touch" },
-    { href: "#contact-info", label: "Info" },
-  ],
-};
