@@ -19,44 +19,21 @@ import Link from "next/link";
 import { ThemeSwitcher } from "../themes/theme-toggle";
 import { lavishlyYours } from "@/lib/fonts/font";
 import { NavLink } from "./navlink";
+import Footer from "../footer/footer";
 
 export default function HomePage() {
-  const [showCV, setShowCV] = useState(false);
-  const [activeUrl, SetActiveUrl] = useState("");
-
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
       <header className="container mx-auto py-6">
-        <nav className="flex items-center justify-center gap-8 ">
-          <NavLink href={"/"}>Work</NavLink>
-          <Link
-            href="#projects"
-            className="text-m font-medium text-foreground/80 hover:text-primary transition-colors"
-          >
-            Projects
-          </Link>
-          <Link
-            href="#skills"
-            className="text-m font-medium text-foreground/80 hover:text-primary transition-colors"
-          >
-            Skills
-          </Link>
-          <Link
-            href="#education"
-            className="text-m font-medium text-foreground/80 hover:text-primary transition-colors"
-          >
-            Education
-          </Link>
-          <Link
-            href="#contact"
-            className="text-m font-medium text-foreground/80 hover:text-primary transition-colors"
-          >
-            Contact
-          </Link>
-
+        <nav className="flex items-center justify-center gap-4">
+          <NavLink href="/">Home</NavLink>
+          <NavLink href="/about">About</NavLink>
+          <NavLink href="#projects">Projects</NavLink>
+          <NavLink href="#experience">Experience</NavLink>
+          <NavLink href="#skills">Skills</NavLink>
+          <NavLink href="/contact">Skills</NavLink>
           <ThemeSwitcher />
-          {/* </div> */}
         </nav>
       </header>
 
@@ -64,7 +41,6 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            {/* <h1 className="text-4xl md:text-6xl font-bold text-primary"> */}
             <h1
               className={`${lavishlyYours.className} text-4xl md:text-6xl font-bold text-primary`}
             >
@@ -96,6 +72,14 @@ export default function HomePage() {
                 +233245765540
               </Badge>
             </div>
+            <div className="flex gap-4">
+              <Button asChild>
+                <NavLink href="/about">Learn More About Me</NavLink>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="#projects">View My Work</Link>
+              </Button>
+            </div>
           </div>
           <div className="relative">
             <div className="aspect-square rounded-2xl bg-primary/20 dark:bg-primary/10 p-8 flex items-center justify-center max-w-md mx-auto">
@@ -110,8 +94,73 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Projects Section */}
+        <section className="space-y-12" id="projects">
+          <h2 className="text-3xl font-bold text-foreground">
+            Featured Projects
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <Zap className="h-8 w-8 text-primary" />
+                  <h3 className="text-2xl font-bold">Taskify</h3>
+                </div>
+                <p className="text-muted-foreground mb-4">
+                  Full-stack productivity web application built with React JS
+                  and Firebase. Features complete CRUD operations and user
+                  authentication for managing todo lists.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="secondary">React JS</Badge>
+                  <Badge variant="outline">Firebase</Badge>
+                  <Badge variant="secondary">Authentication</Badge>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <Globe className="h-8 w-8 text-primary" />
+                  <h3 className="text-2xl font-bold">Unilang Learner</h3>
+                </div>
+                <p className="text-muted-foreground mb-4">
+                  Collaborative flashcards web application similar to Quizlet.
+                  Led UI/UX design and implemented responsive design with full
+                  CRUD functionality.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="secondary">UI/UX Design</Badge>
+                  <Badge variant="outline">Collaboration</Badge>
+                  <Badge variant="secondary">CRUD</Badge>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <Database className="h-8 w-8 text-primary" />
+                  <h3 className="text-2xl font-bold">Portfolio Website</h3>
+                </div>
+                <p className="text-muted-foreground mb-4">
+                  Modern portfolio website built with MERN stack and Next.js.
+                  Features JWT authentication, responsive design, and dynamic
+                  content management.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="secondary">MERN Stack</Badge>
+                  <Badge variant="outline">Next.js</Badge>
+                  <Badge variant="secondary">JWT Auth</Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         {/* Experience Timeline */}
-        <section className="space-y-12" id="work">
+        <section className="space-y-12" id="experience">
           <h2 className="text-3xl font-bold text-center text-foreground">
             Experience Journey
           </h2>
@@ -198,93 +247,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Projects Section */}
-        <section className="space-y-12" id="projects">
-          <h2 className="text-3xl font-bold text-foreground">
-            Featured Projects
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <Zap className="h-8 w-8 text-primary" />
-                  <h3 className="text-2xl font-bold">Taskify</h3>
-                </div>
-                <p className="text-muted-foreground mb-4">
-                  Full-stack productivity web application built with React JS
-                  and Firebase. Features complete CRUD operations and user
-                  authentication for managing todo lists.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">React JS</Badge>
-                  <Badge variant="outline">Firebase</Badge>
-                  <Badge variant="secondary">Authentication</Badge>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <Globe className="h-8 w-8 text-primary" />
-                  <h3 className="text-2xl font-bold">Unilang Learner</h3>
-                </div>
-                <p className="text-muted-foreground mb-4">
-                  Collaborative flashcards web application similar to Quizlet.
-                  Led UI/UX design and implemented responsive design with full
-                  CRUD functionality.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">UI/UX Design</Badge>
-                  <Badge variant="outline">Collaboration</Badge>
-                  <Badge variant="secondary">CRUD</Badge>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-0 shadow-md hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <Database className="h-8 w-8 text-primary" />
-                  <h3 className="text-2xl font-bold">Portfolio Website</h3>
-                </div>
-                <p className="text-muted-foreground mb-4">
-                  Modern portfolio website built with MERN stack and Next.js.
-                  Features JWT authentication, responsive design, and dynamic
-                  content management.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">MERN Stack</Badge>
-                  <Badge variant="outline">Next.js</Badge>
-                  <Badge variant="secondary">JWT Auth</Badge>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* CV Button Card */}
-          <div className="flex justify-center">
-            <Card
-              className="bg-card border shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
-              onClick={() => setShowCV(true)}
-            >
-              <CardContent className="p-8 text-center">
-                <div className="flex items-center justify-center gap-3 mb-4">
-                  <ArrowRight className="h-8 w-8 text-primary" />
-                  <h3 className="text-2xl font-bold">Want to know more?</h3>
-                </div>
-                <p className="text-muted-foreground mb-4">
-                  Explore my complete professional journey, skills, and
-                  achievements in detail.
-                </p>
-                <Button asChild>
-                  <Link href="/cv">Read Full CV</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
         {/* Skills Section */}
         <section className="space-y-12" id="skills">
           <h2 className="text-3xl font-bold text-foreground">
@@ -334,48 +296,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Education Section */}
-        <section className="space-y-8" id="education">
-          <h2 className="text-3xl font-bold text-foreground">Education</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="bg-card/50 border-0 shadow-md">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-bold mb-2">
-                  BSc Earth Science, Petroleum Major
-                </h3>
-                <p className="text-primary font-medium mb-2">
-                  University of Ghana
-                </p>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Sep 2018 - Oct 2022 | Accra, Ghana
-                </p>
-                <p className="text-muted-foreground text-sm">
-                  Specialized in petroleum geology with coursework in geological
-                  mapping, seismic interpretation, and research methods. Built
-                  analytical and problem-solving skills.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-0 shadow-md">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-bold mb-2">Software Engineering</h3>
-                <p className="text-primary font-medium mb-2">
-                  African Leadership Xcelerator
-                </p>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Jan 2023 - Mar 2024 | Nairobi, Kenya
-                </p>
-                <p className="text-muted-foreground text-sm">
-                  Intensive program covering full-stack development, DevOps, and
-                  systems engineering. Project-based learning with real-world
-                  applications.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
         {/* Call to Action */}
         <section className="text-center space-y-8">
           <h2 className="text-3xl font-bold text-foreground">
@@ -387,48 +307,18 @@ export default function HomePage() {
             innovative solutions, let's connect!
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Button variant="default" asChild>
-              <a
-                href="https://github.com/Herman100"
-                className="flex items-center gap-2"
-              >
-                <Github className="h-5 w-5" />
-                GitHub
-              </a>
+            <Button asChild>
+              <NavLink href="/about">More About Me</NavLink>
             </Button>
-            <Button variant="secondary" asChild>
-              <a
-                href="https://www.linkedin.com/in/herman-kwamebour/"
-                className="flex items-center gap-2"
-              >
-                <Linkedin className="h-5 w-5" />
-                LinkedIn
-              </a>
+            <Button variant="outline" asChild>
+              <Link href="/cv">View Full CV</Link>
             </Button>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer
-        className="container mx-auto py-12 border-t border-border"
-        id="contact"
-      >
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Herman Kwamebour. All rights reserved.
-          </p>
-          <div className="flex items-center space-x-6 mt-4 md:mt-0">
-            <a
-              href="mailto:hermankwamebour30@gmail.com"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Get in touch
-              <ArrowRight className="inline-block ml-1 h-4 w-4" />
-            </a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -15,11 +15,27 @@ const NavLink = ({ href, children }: NavLinkProps) => {
   return (
     <Link
       href={href}
-      className={
-        isActive
-          ? "bg-primary text-m font-medium text-foreground/80 hover:text-primary transition-colors"
-          : " text-m font-medium text-foreground/80 hover:text-primary transition-colors"
-      }
+      className={`
+        relative
+        text-sm
+        px-4 py-1
+        text-base
+        font-semibold
+        rounded-full
+        transition-all
+        duration-300
+        ease-in-out
+        ${
+          isActive
+            ? "bg-primary text-white shadow-md"
+            : "text-foreground/80 hover:text-primary hover:bg-primary/5"
+        }
+        focus:outline-none
+        focus:ring-1
+        focus:ring-primary
+        focus:ring-opacity-50
+        group
+      `}
     >
       {children}
     </Link>
