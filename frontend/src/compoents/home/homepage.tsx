@@ -32,7 +32,7 @@ export default function HomePage() {
           <NavLink href="#projects">Projects</NavLink>
           <NavLink href="#experience">Experience</NavLink>
           <NavLink href="#skills">Skills</NavLink>
-          <NavLink href="/contact">Skills</NavLink>
+          <NavLink href="/contact">Contact</NavLink>
           <ThemeSwitcher />
         </nav>
       </header>

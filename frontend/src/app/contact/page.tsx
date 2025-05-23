@@ -49,7 +49,14 @@ export default function ContactPage() {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  interface FormData {
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -57,13 +64,13 @@ export default function ContactPage() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Create mailto link with form data
-    const subject = encodeURIComponent(
+    const subject: string = encodeURIComponent(
       formData.subject || "Contact from Portfolio"
     );
-    const body = encodeURIComponent(
+    const body: string = encodeURIComponent(
       `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
     );
-    const mailtoLink = `mailto:hermankwamebour30@gmail.com?subject=${subject}&body=${body}`;
+    const mailtoLink: string = `mailto:hermankwamebour30@gmail.com?subject=${subject}&body=${body}`;
 
     window.location.href = mailtoLink;
 
