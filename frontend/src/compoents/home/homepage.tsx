@@ -39,57 +39,26 @@ export default function HomePage() {
 
       <main className="container mx-auto px-4 py-12 space-y-24">
         {/* Hero Section */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
+        <section className="grid grid-cols-1 items-center text-center w-[300px] md:w-[600px] mx-auto">
+          <div className="space-y-6 flex flex-col items-center">
             <h1
-              className={`${lavishlyYours.className} text-4xl md:text-6xl font-bold text-primary`}
+              className={`${lavishlyYours.className} text-4xl md:text-8xl font-bold text-primary`}
             >
+              <Code className="h-16 w-16 mx-auto mb-4 text-primary" />
               I'm Herman.
             </h1>
             <p className="text-lg text-foreground">
-              I'm a Fullstack Engineer building scalable web applications from
-              Accra, Ghana.
+              I'm a Geoscientist & Fullstack Engineer building scalable software
+              solutions one line of code at a time.
             </p>
-            <p className="text-muted-foreground">
-              With a unique background combining Earth Science and Software
-              Engineering, I bring both analytical thinking and technical
-              expertise to every project. Currently contributing to MVPs and
-              leading development teams at FusionEdge Technologies.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Badge
-                variant="secondary"
-                className="flex items-center gap-2 px-4 py-2"
-              >
-                <Mail className="h-4 w-4" />
-                hermankwamebour30@gmail.com
-              </Badge>
-              <Badge
-                variant="outline"
-                className="flex items-center gap-2 px-4 py-2"
-              >
-                <Phone className="h-4 w-4" />
-                +233245765540
-              </Badge>
-            </div>
+
             <div className="flex gap-4">
-              <Button asChild>
+              <Button variant="outline">
                 <NavLink href="/about">Learn More About Me</NavLink>
               </Button>
-              <Button variant="outline" asChild>
+              <Button variant="default" asChild>
                 <Link href="#projects">View My Work</Link>
               </Button>
-            </div>
-          </div>
-          <div className="relative">
-            <div className="aspect-square rounded-2xl bg-primary/20 dark:bg-primary/10 p-8 flex items-center justify-center max-w-md mx-auto">
-              <div className="text-center">
-                <Code className="h-16 w-16 mx-auto mb-4 text-primary" />
-                <h3 className="text-xl font-bold mb-2">Fullstack Engineer</h3>
-                <p className="text-muted-foreground">
-                  Building the future, one line of code at a time
-                </p>
-              </div>
             </div>
           </div>
         </section>
@@ -115,6 +84,7 @@ export default function HomePage() {
                   <Badge variant="secondary">React JS</Badge>
                   <Badge variant="outline">Firebase</Badge>
                   <Badge variant="secondary">Authentication</Badge>
+                  <Badge variant="outline">CRUD</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -134,6 +104,7 @@ export default function HomePage() {
                   <Badge variant="secondary">UI/UX Design</Badge>
                   <Badge variant="outline">Collaboration</Badge>
                   <Badge variant="secondary">CRUD</Badge>
+                  <Badge variant="secondary">Firebase Auth</Badge>
                 </div>
               </CardContent>
             </Card>

@@ -92,18 +92,8 @@ export default function ContactPage() {
           <NavLink href="/">Home</NavLink>
           <NavLink href="/about">About</NavLink>
           <NavLink href="/contact">Contact</NavLink>
-          <Link
-            href="#get-in-touch"
-            className="text-m font-medium text-foreground/80 hover:text-primary transition-colors"
-          >
-            Get In Touch
-          </Link>
-          <Link
-            href="#contact-info"
-            className="text-m font-medium text-foreground/80 hover:text-primary transition-colors"
-          >
-            Info
-          </Link>
+          <NavLink href="#get-in-touch">Get In Touch</NavLink>
+          <NavLink href="#contact-info">Info</NavLink>
           <ThemeSwitcher />
         </nav>
       </header>
@@ -117,7 +107,7 @@ export default function ContactPage() {
             >
               Let's Connect
             </h1>
-            <p className="text-lg text-foreground max-w-3xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               Ready to bring your ideas to life? I'd love to hear about your
               project and explore how we can work together to create something
               amazing.
