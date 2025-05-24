@@ -5,27 +5,47 @@ import { NavLink } from "../home/navlink";
 export default function Footer() {
   return (
     <footer className="container mx-auto py-12 border-t border-border">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
+        <div className="space-y-4 text-center ">
           <h3 className="text-lg font-bold text-foreground">
             Herman Kwamebour
           </h3>
           <p className="text-sm text-muted-foreground">
-            Fullstack Engineer crafting digital solutions from Accra, Ghana.
+            Fullstack Engineer | Geoscientist.
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 flex flex-col items-center">
           <h4 className="text-md font-semibold text-foreground">Quick Links</h4>
           <div className="flex flex-col space-y-2">
-            <NavLink href="/">Home</NavLink>
-            <NavLink href="/about">About</NavLink>
-            <Link href="/cv">CV</Link>
-            <Link href="/#projects">Projects</Link>
+            <Link
+              href="/"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              Home
+            </Link>
+            <Link
+              href="/about"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              About
+            </Link>
+            <Link
+              href="/cv"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              CV
+            </Link>
+            <Link
+              href="/#projects"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              Projects
+            </Link>
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 flex flex-col items-center">
           <h4 className="text-md font-semibold text-foreground">Connect</h4>
           <div className="flex flex-col space-y-2">
             <a
@@ -49,7 +69,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 flex flex-col items-center">
           <h4 className="text-md font-semibold text-foreground">Contact</h4>
           <div className="flex flex-col space-y-2">
             <a
@@ -68,7 +88,7 @@ export default function Footer() {
             </a>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground max-w-[300px] text-center">
           © {new Date().getFullYear()} Herman Kwamebour. All rights reserved.
         </p>
       </div>
