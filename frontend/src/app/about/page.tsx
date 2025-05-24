@@ -26,7 +26,7 @@ export default function AboutPage() {
             <h1
               className={`${lavishlyYours.className} text-4xl md:text-6xl font-bold text-primary`}
             >
-              {`<>`} Herman
+              {`< I'm Herman />`}
             </h1>
             <p
               className={` lg:text-3xl text-xl md:text-2xl text-muted-foreground lg:max-w-3xl max-w-xl mx-auto leading-relaxed`}
