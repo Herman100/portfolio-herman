@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -14,24 +14,6 @@ import { ThemeSwitcher } from "../themes/theme-toggle";
 import { cn } from "@/lib/utils";
 import { NavLink } from "../home/navlink";
 import { usePathname } from "next/navigation";
-
-interface NavItem {
-  href: string;
-  label: string;
-}
-
-interface NavHeaderProps {
-  /** Current page identifier to determine which nav items to show */
-  currentPage?: "home" | "about" | "contact";
-  /** Custom navigation items - overrides default items for the page */
-  customNavItems?: NavItem[];
-  /** Additional CSS classes */
-  className?: string;
-  /** Whether to show the logo/brand name */
-  showBrand?: boolean;
-  /** Brand text to display */
-  brandText?: string;
-}
 
 const defaultNavItems = {
   home: [
