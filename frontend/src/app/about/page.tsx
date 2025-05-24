@@ -15,7 +15,6 @@ import {
 import Link from "next/link";
 import { lavishlyYours } from "@/lib/fonts/font";
 import { NavLink } from "@/components/home/navlink";
-import { ThemeSwitcher } from "@/components/themes/theme-toggle";
 
 export default function AboutPage() {
   return (
@@ -27,11 +26,14 @@ export default function AboutPage() {
             <h1
               className={`${lavishlyYours.className} text-4xl md:text-6xl font-bold text-primary`}
             >
-              About Herman
+              {`<>`} Herman
             </h1>
-            <p className="text-lg text-foreground max-w-3xl mx-auto">
-              Discover the journey from Earth Science to Software Engineering,
-              and the passion that drives innovation in every project.
+            <p
+              className={` lg:text-3xl text-xl md:text-2xl text-muted-foreground lg:max-w-3xl max-w-xl mx-auto leading-relaxed`}
+            >
+              I'm Herman. A fullstack engineer with a passion for building
+              scalable solutions to make the world a better place through
+              technology.
             </p>
           </div>
         </section>
