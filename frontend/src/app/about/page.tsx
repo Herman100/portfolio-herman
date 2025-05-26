@@ -42,7 +42,7 @@ export default function AboutPage() {
         <section className="space-y-12">
           <Card className="bg-card/50 border-0 shadow-lg max-w-4xl mx-auto">
             <CardContent className="p-12">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
                 <div className="space-y-6">
                   <div className="flex items-center gap-3 mb-4">
                     <User className="h-8 w-8 text-primary" />
@@ -57,11 +57,11 @@ export default function AboutPage() {
                   </p>
                   <p className="text-muted-foreground leading-relaxed">
                     Currently contributing to MVPs and leading development teams
-                    at FusionEdge Technologies, I'm passionate about building
-                    scalable solutions that make a real impact. My diverse
-                    background allows me to approach challenges from multiple
-                    perspectives, combining scientific rigor with creative
-                    engineering solutions.
+                    for my own self inspired projects, I'm passionate about
+                    building scalable solutions that make a real impact. My
+                    diverse background allows me to approach challenges from
+                    multiple perspectives, combining scientific rigor with
+                    creative engineering solutions.
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <Badge
@@ -81,7 +81,7 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <div className="relative">
-                  <div className="aspect-square rounded-2xl bg-primary/20 dark:bg-primary/10 p-8 flex items-center justify-center">
+                  <div className="aspect-square rounded-b-[300px] bg-primary/20 dark:bg-primary/10 p-8 flex items-center justify-center">
                     <div className="text-center">
                       <Code className="h-16 w-16 mx-auto mb-4 text-primary" />
                       <h3 className="text-xl font-bold mb-2">Problem Solver</h3>

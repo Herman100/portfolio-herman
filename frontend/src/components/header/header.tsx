@@ -115,8 +115,7 @@ export default function NavHeader() {
           </div>
 
           {/* Mobile Menu */}
-          <div className="flex items-center gap-2 md:hidden">
-            <ThemeSwitcher />
+          <div className="flex gap-2 md:hidden justify-between w-full">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button
@@ -160,6 +159,7 @@ export default function NavHeader() {
                 </div>
               </SheetContent>
             </Sheet>
+            <ThemeSwitcher />
           </div>
         </nav>
       </div>

@@ -4,7 +4,7 @@ import { NavLink } from "../home/navlink";
 
 export default function Footer() {
   return (
-    <footer className="container mx-auto py-12 border-t border-border">
+    <footer className="container mx-auto py-12 border-t border-border flex flex-col items-center">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
         <div className="space-y-4 text-center ">
           <h3 className="text-lg font-bold text-foreground">
@@ -88,10 +88,10 @@ export default function Footer() {
             </a>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground max-w-[300px] text-center">
-          © {new Date().getFullYear()} Herman Kwamebour. All rights reserved.
-        </p>
       </div>
+      <p className="text-sm text-muted-foreground max-w-[300px] text-center mt-24">
+        © {new Date().getFullYear()} Herman Kwamebour. All rights reserved.
+      </p>
     </footer>
   );
 }
