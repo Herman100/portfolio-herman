@@ -31,7 +31,7 @@ export default function AboutPage() {
             <p
               className={` lg:text-3xl text-xl md:text-2xl text-muted-foreground lg:max-w-3xl max-w-xl mx-auto leading-relaxed`}
             >
-              I'm Herman. A fullstack engineer with a passion for building
+              I&#39;m Herman. A fullstack engineer with a passion for building
               scalable solutions to make the world a better place through
               technology.
             </p>
@@ -57,7 +57,7 @@ export default function AboutPage() {
                   </p>
                   <p className="text-muted-foreground leading-relaxed">
                     Currently contributing to MVPs and leading development teams
-                    for my own self inspired projects, I'm passionate about
+                    for my own self inspired projects, I&#39;m passionate about
                     building scalable solutions that make a real impact. My
                     diverse background allows me to approach challenges from
                     multiple perspectives, combining scientific rigor with
@@ -236,9 +236,9 @@ export default function AboutPage() {
             Ready to Collaborate?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Whether you're looking for a dedicated fullstack engineer or want to
-            discuss innovative project ideas, I'm always excited to connect with
-            fellow creators and problem-solvers.
+            Whether you&#39;re looking for a dedicated fullstack engineer or
+            want to discuss innovative project ideas, I&#39;m always excited to
+            connect with fellow creators and problem-solvers.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Button asChild>

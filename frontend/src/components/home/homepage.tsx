@@ -19,11 +19,11 @@ export default function HomePage() {
               className={`${lavishlyYours.className} lg:text-6xl text-5xl md:text-5xl font-bold text-primary hover:text-primary/80 transition-all duration-300`}
             >
               <Code className="h-16 w-16 mx-auto mb-4 text-primary hover:text-primary/80 transition-all duration-300" />
-              Hello. I'm Herman.
+              Hello. I&#39;m Herman.
             </h1>
             <p className="text-lg text-muted-foreground">
-              I'm a Geoscientist & Fullstack Engineer building scalable software
-              solutions one line of code at a time.
+              I&#39;m a Geoscientist & Fullstack Engineer building scalable
+              software solutions one line of code at a time.
             </p>
 
             <div className="flex gap-4">
@@ -244,12 +244,12 @@ export default function HomePage() {
         {/* Call to Action */}
         <section className="text-center space-y-8">
           <h2 className="text-3xl font-bold text-foreground">
-            Let's Build Something Amazing
+            Let&#39;s Build Something Amazing
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            I'm always excited to work on projects that make a real impact.
+            I&#39;m always excited to work on projects that make a real impact.
             Whether you need a fullstack engineer or want to collaborate on
-            innovative solutions, let's connect!
+            innovative solutions, let&#39;s connect!
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Button asChild>

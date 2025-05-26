@@ -18,6 +18,7 @@ const NavLink = ({ className, href, children }: NavLinkProps) => {
     <Link
       href={href}
       className={` 
+        ${className || ""} 
         relative
         text-sm
         px-4 py-1

@@ -101,7 +101,7 @@ export default function NavHeader() {
               <NavLink
                 key={item.href}
                 href={item.href}
-                onClick={(e: any) => handleHashLink(item.href, e)}
+                onClick={(e) => handleHashLink(item.href, e)}
                 className="px-3 py-2 text-sm lg:text-base font-medium text-foreground/80 hover:text-primary transition-colors rounded-md hover:bg-muted/50"
               >
                 {item.label}
