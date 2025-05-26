@@ -28,15 +28,6 @@ export default function CurriculumVitae() {
     <div className="min-h-screen bg-background py-8">
       <div className="max-w-5xl mx-auto px-4">
         {/* Back Navigation */}
-        <div className="mb-8 flex items-center justify-between">
-          <Button variant="ghost" asChild>
-            <Link href="/" className="flex items-center gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Portfolio
-            </Link>
-          </Button>
-          <ThemeSwitcher />
-        </div>
 
         {/* Header Section */}
         <Card className="mb-8 shadow-lg">
