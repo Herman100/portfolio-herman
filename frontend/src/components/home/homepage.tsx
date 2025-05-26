@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Code, Database, Globe, Zap } from "lucide-react";
+import { Code, Database, Globe, Zap } from "lucide-react";
 import Link from "next/link";
 import { lavishlyYours } from "@/lib/fonts/font";
 import { NavLink } from "./navlink";
@@ -16,12 +16,12 @@ export default function HomePage() {
         <section className="grid grid-cols-1 items-center text-center w-[300px] md:w-[600px] mx-auto">
           <div className="space-y-6 flex flex-col items-center">
             <h1
-              className={`${lavishlyYours.className} text-4xl md:text-8xl font-bold text-primary hover:text-primary/80 transition-all duration-300`}
+              className={`${lavishlyYours.className} lg:text-6xl text-5xl md:text-5xl font-bold text-primary hover:text-primary/80 transition-all duration-300`}
             >
               <Code className="h-16 w-16 mx-auto mb-4 text-primary hover:text-primary/80 transition-all duration-300" />
               Hello. I'm Herman.
             </h1>
-            <p className="text-lg text-foreground">
+            <p className="text-lg text-muted-foreground">
               I'm a Geoscientist & Fullstack Engineer building scalable software
               solutions one line of code at a time.
             </p>

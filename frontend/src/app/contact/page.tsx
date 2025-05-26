@@ -86,18 +86,6 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <header className="container mx-auto py-6">
-        <nav className="flex items-center justify-center gap-8">
-          <NavLink href="/">Home</NavLink>
-          <NavLink href="/about">About</NavLink>
-          <NavLink href="/contact">Contact</NavLink>
-          <NavLink href="#get-in-touch">Get In Touch</NavLink>
-          <NavLink href="#contact-info">Info</NavLink>
-          <ThemeSwitcher />
-        </nav>
-      </header>
-
       <main className="container mx-auto px-4 py-12 space-y-24">
         {/* Hero Section */}
         <section className="text-center space-y-8">
@@ -449,8 +437,6 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }
