@@ -1,7 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { siGithub } from "simple-icons";
 import {
   Mail,
   Phone,
@@ -217,7 +216,7 @@ export default function CurriculumVitae() {
                         MVP Development:
                       </strong>{" "}
                       Contributed to the development and successful launch of
-                      the company's MVP, helping the team go to market
+                      the company&#39;s MVP, helping the team go to market
                     </span>
                   </li>
                   <li className="flex items-start gap-3">

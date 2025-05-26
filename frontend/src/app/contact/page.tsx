@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,8 +20,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { lavishlyYours } from "@/lib/fonts/font";
 import { NavLink } from "@/components/home/navlink";
-import { ThemeSwitcher } from "@/components/themes/theme-toggle";
-import Footer from "@/components/footer/footer";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -49,12 +46,12 @@ export default function ContactPage() {
     }));
   };
 
-  interface FormData {
-    name: string;
-    email: string;
-    subject: string;
-    message: string;
-  }
+  // interface FormData {
+  //   name: string;
+  //   email: string;
+  //   subject: string;
+  //   message: string;
+  // }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -93,10 +90,10 @@ export default function ContactPage() {
             <h1
               className={`${lavishlyYours.className} text-4xl md:text-6xl font-bold text-primary`}
             >
-              Let's Connect
+              Let&#39;s Connect
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Ready to bring your ideas to life? I'd love to hear about your
+              Ready to bring your ideas to life? I&#39;d love to hear about your
               project and explore how we can work together to create something
               amazing.
             </p>
@@ -388,7 +385,7 @@ export default function ContactPage() {
             <Card className="bg-card/50 border-0 shadow-md">
               <CardContent className="p-6">
                 <h3 className="text-lg font-bold mb-3">
-                  What's your typical response time?
+                  What&#39;s your typical response time?
                 </h3>
                 <p className="text-muted-foreground text-sm">
                   I typically respond to emails within 24 hours during weekdays.
@@ -403,8 +400,9 @@ export default function ContactPage() {
                   Do you work on weekends?
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  While I prefer to maintain work-life balance, I'm flexible for
-                  urgent project needs and can accommodate different time zones.
+                  While I prefer to maintain work-life balance, I&#39;m flexible
+                  for urgent project needs and can accommodate different time
+                  zones.
                 </p>
               </CardContent>
             </Card>
@@ -416,8 +414,8 @@ export default function ContactPage() {
                 </h3>
                 <p className="text-muted-foreground text-sm">
                   I work on full-stack web applications, MVPs, team leadership
-                  roles, and consulting projects. I'm particularly interested in
-                  innovative solutions.
+                  roles, and consulting projects. I&#39;m particularly
+                  interested in innovative solutions.
                 </p>
               </CardContent>
             </Card>

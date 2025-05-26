@@ -1,6 +1,5 @@
-import { ArrowRight, Mail, Phone, Github, Linkedin } from "lucide-react";
+import { Mail, Phone, Github, Linkedin } from "lucide-react";
 import Link from "next/link";
-import { NavLink } from "../home/navlink";
 
 export default function Footer() {
   return (
