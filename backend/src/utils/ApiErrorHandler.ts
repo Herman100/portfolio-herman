@@ -1,3 +1,5 @@
+import { NextFunction, Request, Response } from "express";
+
 class ApiErrorHandler extends Error {
     stack?: any;
     statusCode: any;
