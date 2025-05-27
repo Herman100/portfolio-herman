@@ -1,4 +1,3 @@
-// app/(main)/layout.tsx
 import NavHeader from "@/components/header/header";
 import Footer from "@/components/footer/footer";
 
