@@ -1,3 +1,5 @@
+import NavHeader from "@/components/header/header";
+
 export default function AuthLayout({
   children,
 }: {
