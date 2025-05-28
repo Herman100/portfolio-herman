@@ -15,7 +15,7 @@ const errorHandler: ErrorRequestHandler = (
             errors: err.errors,
             data: null,
         });
-        return; // Early return instead of next()
+        return;
     }
 
     // Handle Mongoose validation errors
