@@ -19,11 +19,9 @@ const adminController = {
             // Check if the admin already exists
             const existingAdmin = await Admin.findOne({ role: "admin" });
             if (existingAdmin) {
-                throw new ApiErrorHandler(
-                    400,
-                    "Admin already exists",
-                    "Admin Registration Error"
-                );
+                throw new ApiErrorHandler(400, "Admin already exists", [
+                    "Admin Registration Error",
+                ]);
             }
 
             // Hash the password
@@ -55,21 +53,17 @@ const adminController = {
         // Find the admin by email
         const admin = await Admin.findOne({ email });
         if (!admin) {
-            throw new ApiErrorHandler(
-                401,
-                "Invalid email or password",
-                "Admin Login Error"
-            );
+            throw new ApiErrorHandler(401, "Invalid email or password", [
+                "Admin Login Error",
+            ]);
         }
 
         // Check if the password is correct
         const isPasswordValid = await bcrypt.compare(password, admin.password);
         if (!isPasswordValid) {
-            throw new ApiErrorHandler(
-                401,
-                "Invalid email or password",
-                "Admin Login Error"
-            );
+            throw new ApiErrorHandler(401, "Invalid email or password", [
+                "Admin Login Error",
+            ]);
         }
 
         // Generate access and refresh tokens
@@ -115,21 +109,17 @@ const adminController = {
             const { refreshToken } = req.cookies;
 
             if (!refreshToken) {
-                throw new ApiErrorHandler(
-                    401,
-                    "Refresh token is required",
-                    "Authentication Error"
-                );
+                throw new ApiErrorHandler(401, "Refresh token is required", [
+                    "Authentication Error",
+                ]);
             }
 
             // Verify the refresh token
             const decoded = verifyRefreshToken(refreshToken);
             if (!decoded) {
-                throw new ApiErrorHandler(
-                    401,
-                    "Invalid refresh token",
-                    "Refresh Token Error"
-                );
+                throw new ApiErrorHandler(401, "Invalid refresh token", [
+                    "Refresh Token Error",
+                ]);
             }
 
             // Generate new access and refresh tokens
@@ -159,17 +149,15 @@ const adminController = {
         // Verify the refresh token
         const decoded = verifyRefreshToken(refreshToken);
         if (!decoded) {
-            throw new ApiErrorHandler(
-                401,
-                "Invalid refresh token",
-                "Logout Error"
-            );
+            throw new ApiErrorHandler(401, "Invalid refresh token", [
+                "Logout Error",
+            ]);
         }
 
         // Find the admin by email
         const admin = await Admin.findOne({ email: decoded.email });
         if (!admin) {
-            throw new ApiErrorHandler(404, "Admin not found", "Logout Error");
+            throw new ApiErrorHandler(404, "Admin not found", ["Logout Error"]);
         }
 
         admin.refreshToken = "";
@@ -193,21 +181,17 @@ const adminController = {
             const id = req.user?._id;
 
             if (!id) {
-                throw new ApiErrorHandler(
-                    401,
-                    "Unauthorized",
-                    "Get Profile Error"
-                );
+                throw new ApiErrorHandler(401, "Unauthorized", [
+                    "Get Profile Error",
+                ]);
             }
             const admin = await Admin.findById(id).select(
                 "-password -refreshToken"
             );
             if (!admin) {
-                throw new ApiErrorHandler(
-                    404,
-                    "Admin not found",
-                    "Get Profile Error"
-                );
+                throw new ApiErrorHandler(404, "Admin not found", [
+                    "Get Profile Error",
+                ]);
             }
 
             res.status(200).json(
