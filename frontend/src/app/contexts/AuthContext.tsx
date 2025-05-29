@@ -73,6 +73,7 @@ export const AuthContextProvider = ({
           error.config.headers.Authorization = `Bearer ${accessToken}`;
           return apiClient.request(error.config);
         } catch (refreshError) {
+          console.error("Token refresh failed:", refreshError);
           logout();
         }
       }
@@ -135,6 +136,7 @@ export const AuthContextProvider = ({
       setUser(null);
       setAccessToken(null);
       setIsLoading(false);
+      router.push("/admin-login");
     }
   };
 
