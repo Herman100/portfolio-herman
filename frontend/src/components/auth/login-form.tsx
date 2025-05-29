@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { useAuthContext } from "@/app/contexts/AuthContext";
+import { useAuth } from "@/app/contexts/AuthContext";
 
 export function LoginForm({
   className,
@@ -23,7 +23,7 @@ export function LoginForm({
     password: "",
   });
 
-  const { login } = useAuthContext();
+  const { login } = useAuth();
 
   const handleSubmitForm = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,8 +34,6 @@ export function LoginForm({
 
       // Redirect or show success message
       console.log("Response from login:", response);
-
-      console.log("Login successful");
     } catch (error) {
       // Handle error (e.g., show error message)
       console.error("Login failed:", error);
