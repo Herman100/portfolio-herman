@@ -16,10 +16,15 @@ export default function HomePage() {
         <section className="grid grid-cols-1 items-center text-center w-[300px] md:w-[600px] mx-auto">
           <div className="space-y-6 flex flex-col items-center">
             <h1
-              className={`${lavishlyYours.className} lg:text-6xl text-5xl md:text-5xl font-bold text-primary hover:text-primary/80 transition-all duration-300`}
+              className={`font-serif lg:text-[72px]/12 text-xl md:text-3xl  font-bold text-primary hover:text-primary/80 transition-all duration-300`}
             >
               <Code className="h-16 w-16 mx-auto mb-4 text-primary hover:text-primary/80 transition-all duration-300" />
-              Hello. I&#39;m Herman.
+              I&#39;m Herman. <br />
+              <span
+                className={` font-mono text-1xl md:text-2xl font-bold mt-0 pt-0`}
+              >
+                Software Engineer (Fullstack)
+              </span>
             </h1>
             <p className="text-lg text-muted-foreground">
               I&#39;m a Geoscientist & Fullstack Engineer building scalable
