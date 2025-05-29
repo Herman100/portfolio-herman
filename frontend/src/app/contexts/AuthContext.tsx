@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import axios from "axios";
 import { User } from "@/types/user";
 import { useRouter } from "next/navigation";
@@ -31,7 +37,7 @@ export const AuthContextProvider = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const baseURL =
@@ -150,18 +156,13 @@ export const AuthContextProvider = ({
     }
   };
 
-  // Check for existing session on app load
-  useEffect(() => {
+  // Check authentication status on initial load
+  useCallback(() => {
     const checkAuth = async () => {
       try {
-        setIsLoading(true);
-        // Try to refresh token (this validates the httpOnly cookie)
         await refreshAuth();
       } catch (error) {
-        // No valid session
-        console.log("No valid session found");
-      } finally {
-        setIsLoading(false);
+        console.error("Error during authentication check:", error);
       }
     };
 

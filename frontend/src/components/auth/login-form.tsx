@@ -23,17 +23,14 @@ export function LoginForm({
     password: "",
   });
 
-  const { login } = useAuth();
+  const { login, isLoading } = useAuth();
 
   const handleSubmitForm = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission logic here
     console.log("Form submitted:", formData);
     try {
-      const response = await login(formData.email, formData.password);
-
-      // Redirect or show success message
-      console.log("Response from login:", response);
+      await login(formData.email, formData.password);
     } catch (error) {
       // Handle error (e.g., show error message)
       console.error("Login failed:", error);
@@ -45,7 +42,7 @@ export function LoginForm({
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Admin Auth Portal</CardTitle>
-          {/* <CardDescription>Login to manage your application</CardDescription> */}
+          <CardDescription>login with admin details</CardDescription>
         </CardHeader>
         <CardContent>
           <form>
@@ -88,6 +85,7 @@ export function LoginForm({
                 type="submit"
                 className="w-full"
                 onClick={handleSubmitForm}
+                disabled={isLoading}
               >
                 Login
               </Button>
