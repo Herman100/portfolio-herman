@@ -113,8 +113,10 @@ export const AuthContextProvider = ({
       } else {
         return { success: false, message: response.data.message };
       }
-    } catch (error: any) {
-      const message = error.response?.data?.message || "Login failed";
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message
+        : "Login failed";
       return { success: false, message };
     } finally {
       setIsLoading(false);
@@ -167,7 +169,7 @@ export const AuthContextProvider = ({
     };
 
     checkAuth();
-  }, []);
+  }, [refreshAuth]);
 
   // Auto-refresh token before it expires
   useEffect(() => {
@@ -181,7 +183,7 @@ export const AuthContextProvider = ({
     }, 14 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, [accessToken]);
+  }, [accessToken, refreshAuth]);
 
   const values = {
     user,
