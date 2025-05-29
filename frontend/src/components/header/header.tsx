@@ -13,44 +13,17 @@ import {
 import { ThemeSwitcher } from "../themes/theme-toggle";
 import { cn } from "@/lib/utils";
 import { NavLink } from "../home/navlink";
-import { usePathname } from "next/navigation";
 
-const defaultNavItems = {
-  home: [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "#projects", label: "Projects" },
-    { href: "#experience", label: "Experience" },
-    { href: "#skills", label: "Skills" },
-    { href: "/contact", label: "Contact" },
-  ],
-  about: [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "#intro", label: "Introduction" },
-    { href: "#education", label: "Education" },
-    { href: "/contact", label: "Contact" },
-  ],
-  contact: [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
-    { href: "#get-in-touch", label: "Get In Touch" },
-    { href: "#contact-info", label: "Info" },
-  ],
-};
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+  { href: "/cv", label: "CV" },
+];
 
 export default function NavHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const pathname = usePathname();
-  const currentPage =
-    pathname === "/"
-      ? "home"
-      : (pathname.replace("/", "") as "about" | "contact");
-
-  // Get navigation items based on current page or use custom items
-  const navItems = defaultNavItems[currentPage] || defaultNavItems.home;
 
   // Handle scroll effect for sticky header
   useEffect(() => {
@@ -65,23 +38,6 @@ export default function NavHeader() {
   // Close mobile menu when clicking on a link
   const handleNavClick = () => {
     setIsOpen(false);
-  };
-
-  // Handle smooth scrolling for hash links
-  const handleHashLink = (href: string, e?: React.MouseEvent) => {
-    // Always close the mobile menu first
-    setIsOpen(false);
-
-    if (href.startsWith("#")) {
-      e?.preventDefault();
-      // Add a small delay to allow the sheet to close first
-      setTimeout(() => {
-        const element = document.querySelector(href);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 150);
-    }
   };
 
   return (
@@ -101,7 +57,6 @@ export default function NavHeader() {
               <NavLink
                 key={item.href}
                 href={item.href}
-                onClick={(e) => handleHashLink(item.href, e)}
                 className="px-3 py-2 md:rounded-full text-sm lg:text-base font-medium text-foreground/80 hover:text-primary transition-colors rounded-md hover:bg-muted/50"
               >
                 {item.label}
@@ -124,7 +79,7 @@ export default function NavHeader() {
                   className="h-10 w-10"
                   aria-label="Toggle navigation menu"
                 >
-                  <Menu className="h-5 w-5" onClick={handleNavClick} />
+                  <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80 sm:w-96">
@@ -142,7 +97,7 @@ export default function NavHeader() {
                       <NavLink
                         key={item.href}
                         href={item.href}
-                        onClick={(e) => handleHashLink(item.href, e)}
+                        onClick={handleNavClick}
                         className="flex items-center px-4 py-3 text-lg font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-colors"
                       >
                         {item.label}

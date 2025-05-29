@@ -1,15 +1,15 @@
 class ApiErrorHandler extends Error {
-    stack?: any;
-    statusCode: any;
+    statusCode: number;
     data: null;
-    errors: any;
+    errors: any[];
     success: boolean;
+    stack?: string;
 
     constructor(
-        statusCode: any,
-        stack: any = "",
+        statusCode: number,
         message: string = "Unsuccessful api request",
-        errors: any = []
+        errors: any[] = [],
+        stack?: string
     ) {
         super(message);
         this.statusCode = statusCode;

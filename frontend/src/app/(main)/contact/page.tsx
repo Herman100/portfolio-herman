@@ -88,7 +88,7 @@ export default function ContactPage() {
         <section className="text-center space-y-8">
           <div className="space-y-6">
             <h1
-              className={`${lavishlyYours.className} text-4xl md:text-6xl font-bold text-primary`}
+              className={`${lavishlyYours.className} text-4xl md:text-6xl font-bold text-primary font-serif`}
             >
               Let&#39;s Connect
             </h1>

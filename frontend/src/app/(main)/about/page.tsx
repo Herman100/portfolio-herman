@@ -24,12 +24,12 @@ export default function AboutPage() {
         <section className="text-center space-y-8" id="intro">
           <div className="space-y-6">
             <h1
-              className={`${lavishlyYours.className} text-4xl md:text-6xl font-bold text-primary`}
+              className={`font-serif lg:text-[72px]/12 text-xl md:text-3xl  font-bold text-primary hover:text-primary/80 transition-all duration-300`}
             >
-              {`< I'm Herman />`}
+              {`< Herman />`}
             </h1>
             <p
-              className={` lg:text-3xl text-xl md:text-2xl text-muted-foreground lg:max-w-3xl max-w-xl mx-auto leading-relaxed`}
+              className={`mt-3 text-xl md:text-xl text-muted-foreground lg:max-w-3xl max-w-xl mx-auto leading-relaxed`}
             >
               I&#39;m Herman. A fullstack engineer with a passion for building
               scalable solutions to make the world a better place through

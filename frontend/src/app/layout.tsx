@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/themes/theme-provider";
 import Head from "next/head";
+import { AuthContextProvider } from "./contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "Herman Kwamebour | Portfolio",
@@ -43,7 +44,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AuthContextProvider>{children}</AuthContextProvider>
         </ThemeProvider>
       </body>
     </html>
