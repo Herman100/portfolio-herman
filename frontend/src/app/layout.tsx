@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/themes/theme-provider";
 import Head from "next/head";
 import { AuthContextProvider } from "./contexts/AuthContext";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Herman Kwamebour | Portfolio",
@@ -44,7 +45,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthContextProvider>{children}</AuthContextProvider>
+          <AuthContextProvider>
+            {children}
+            <Analytics />
+          </AuthContextProvider>
         </ThemeProvider>
       </body>
     </html>
