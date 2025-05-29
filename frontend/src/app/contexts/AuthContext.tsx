@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { User } from "@/types/user";
+import { useRouter } from "next/navigation";
 
 interface AuthContextType {
   // State
@@ -31,6 +32,7 @@ export const AuthContextProvider = ({
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   const baseURL =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
@@ -46,6 +48,8 @@ export const AuthContextProvider = ({
 
   // Request interceptor to add auth header
   apiClient.interceptors.request.use((config) => {
+    // console.log("Request config:", config);
+
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -96,6 +100,8 @@ export const AuthContextProvider = ({
         if (userResponse.data.success) {
           setUser(userResponse.data.data);
         }
+        // Redirect to admin dashboard
+        router.push("/admin/dashboard");
 
         return { success: true, message: response.data.message };
       } else {
