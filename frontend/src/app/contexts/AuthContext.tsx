@@ -17,6 +17,7 @@ interface AuthContextType {
   accessToken: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  isInitialized: boolean; // New flag to track if auth check is complete
 
   // Actions
   login: (
@@ -38,6 +39,7 @@ export const AuthContextProvider = ({
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false); // Track initialization
   const router = useRouter();
 
   const baseURL =
@@ -54,8 +56,6 @@ export const AuthContextProvider = ({
 
   // Request interceptor to add auth header
   apiClient.interceptors.request.use((config) => {
-    // console.log("Request config:", config);
-
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -95,6 +95,8 @@ export const AuthContextProvider = ({
 
       if (response.data.success) {
         const { accessToken: token } = response.data.data;
+
+        console.log("Login successful, access token:", token);
 
         // Set access token
         setAccessToken(token);
@@ -140,7 +142,7 @@ export const AuthContextProvider = ({
     }
   };
 
-  const refreshAuth = async (): Promise<void> => {
+  const refreshAuth = useCallback(async (): Promise<void> => {
     try {
       const response = await apiClient.post("/admin/refresh");
 
@@ -149,33 +151,43 @@ export const AuthContextProvider = ({
         setAccessToken(newToken);
 
         // Optionally refresh user data
-        const userResponse = await apiClient.get("/admin/profile");
+        const userResponse = await apiClient.get("/admin/profile", {
+          headers: { Authorization: `Bearer ${newToken}` },
+        });
         if (userResponse.data.success) {
           setUser(userResponse.data.data);
         }
       }
     } catch (error) {
       console.error("Token refresh failed:", error);
+      // Clear auth state on refresh failure
+      setUser(null);
+      setAccessToken(null);
       throw error;
     }
-  };
+  }, [apiClient]);
 
   // Check authentication status on initial load
-  useCallback(() => {
+  useEffect(() => {
     const checkAuth = async () => {
       try {
+        setIsLoading(true);
         await refreshAuth();
       } catch (error) {
         console.error("Error during authentication check:", error);
+        // User is not authenticated, that's okay
+      } finally {
+        setIsLoading(false);
+        setIsInitialized(true); // Mark as initialized regardless of success/failure
       }
     };
 
     checkAuth();
-  }, [refreshAuth]);
+  }, []); // Empty dependency array - only run once on mount
 
   // Auto-refresh token before it expires
   useEffect(() => {
-    if (!accessToken) return;
+    if (!accessToken || !isInitialized) return;
 
     // Refresh token every 14 minutes (assuming 15-minute expiry)
     const interval = setInterval(() => {
@@ -185,13 +197,14 @@ export const AuthContextProvider = ({
     }, 14 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, [accessToken, refreshAuth]);
+  }, [accessToken, refreshAuth, isInitialized]);
 
   const values = {
     user,
     accessToken,
     isLoading,
     isAuthenticated,
+    isInitialized, // Expose initialization state
     login,
     logout,
     refreshAuth,
