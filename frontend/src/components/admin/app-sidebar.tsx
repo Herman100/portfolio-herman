@@ -46,7 +46,14 @@ const data = {
       title: "Dashboard",
       url: "#",
       icon: GalleryVerticalEnd,
-      isActive: true,
+      // isActive: true,
+      items: [
+        {
+          title: "Dashboard",
+          url: "/admin/dashboard",
+          icon: GalleryVerticalEnd,
+        },
+      ],
     },
     {
       title: "Analytics",
@@ -74,7 +81,7 @@ const data = {
       items: [
         {
           title: "Latest Posts",
-          url: "#",
+          url: "/admin/blogs",
         },
 
         {
@@ -118,7 +125,7 @@ const data = {
       items: [
         {
           title: "Profile",
-          url: "#",
+          url: "/admin/profile",
         },
         {
           title: "Account",
