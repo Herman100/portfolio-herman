@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/app/contexts/AuthContext";
-import { AppSidebar } from "@/components/admin/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,71 +10,62 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Page() {
   const { user } = useAuth();
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/admin/dashboard">
-                    Dashboard
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Overview</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {/* Welcome message */}
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-            <h1 className="text-2xl font-bold">
-              Welcome back, {user?.name || user?.email}!
-            </h1>
-            <p className="text-muted-foreground">
-              Here's what's happening with your admin dashboard.
-            </p>
-          </div>
+    <SidebarInset>
+      <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+        <div className="flex items-center gap-2 px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="/admin/dashboard">
+                  Dashboard
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Overview</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      </header>
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        {/* Welcome message */}
+        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+          <h1 className="text-2xl font-bold">
+            Welcome back, {user?.name || user?.email}!
+          </h1>
+          <p className="text-muted-foreground">
+            Here's what's happening with your admin dashboard.
+          </p>
+        </div>
 
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-              <span className="text-sm text-muted-foreground">
-                Analytics Card
-              </span>
-            </div>
-            <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-              <span className="text-sm text-muted-foreground">
-                Statistics Card
-              </span>
-            </div>
-            <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-              <span className="text-sm text-muted-foreground">
-                Reports Card
-              </span>
-            </div>
+        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+          <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
+            <span className="text-sm text-muted-foreground">
+              Analytics Card
+            </span>
           </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min flex items-center justify-center">
-            <span className="text-muted-foreground">Main Content Area</span>
+          <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
+            <span className="text-sm text-muted-foreground">
+              Statistics Card
+            </span>
+          </div>
+          <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
+            <span className="text-sm text-muted-foreground">Reports Card</span>
           </div>
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min flex items-center justify-center">
+          <span className="text-muted-foreground">Main Content Area</span>
+        </div>
+      </div>
+    </SidebarInset>
   );
 }
