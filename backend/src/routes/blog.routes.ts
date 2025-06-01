@@ -6,15 +6,16 @@ import {
     updateCategory,
     deleteCategory,
 } from "../controllers/blog-category.controller.js";
+import { verifyAccessToken } from "../middleware/admin.middleware.js";
 
 const router = Router();
 
 // Blog Category Routes
-router.post("/categories", createCategory);
-router.get("/categories", getAllCategories);
-router.get("/categories/:id", getCategoryById);
-router.put("/categories/:id", updateCategory);
-router.delete("/categories/:id", deleteCategory);
+router.post("/categories", createCategory, verifyAccessToken);
+router.get("/categories", getAllCategories, verifyAccessToken);
+router.get("/categories/:id", getCategoryById, verifyAccessToken);
+router.put("/categories/:id", updateCategory, verifyAccessToken);
+router.delete("/categories/:id", deleteCategory, verifyAccessToken);
 
 // Blog Routes (to be implemented)
 // router.post("/", createBlog);

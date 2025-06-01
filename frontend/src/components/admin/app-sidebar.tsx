@@ -8,7 +8,9 @@ import {
   Command,
   Frame,
   GalleryVerticalEnd,
+  LogOut,
   Map,
+  Outdent,
   PieChart,
   Settings,
   Settings2,
@@ -25,23 +27,27 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenuButton,
   SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { ThemeSwitcher } from "../themes/theme-toggle";
+import { NavLink } from "../home/navlink";
+import Link from "next/link";
+import { useAuth } from "@/app/contexts/AuthContext";
 
 const data = {
   user: {
-    name: "HKB Admin",
+    name: "Herman",
     email: "hermankwamebour30@gmail.com",
   },
-  teams: [
-    {
-      name: "HKB Admin",
-      logo: User,
-      plan: "Admin",
-    },
-  ],
+  // teams: [
+  //   {
+  //     name: "HKB Admin",
+  //     logo: User,
+  //     plan: "Admin",
+  //   },
+  // ],
   navMain: [
     {
       title: "Dashboard",
@@ -169,11 +175,13 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { logout } = useAuth();
   return (
     <div>
       <Sidebar collapsible="icon" {...props}>
         <SidebarHeader>
-          <TeamSwitcher teams={data.teams} />
+          {/* <TeamSwitcher teams={data.teams} /> */}
+          <NavUser user={data.user} />
         </SidebarHeader>
         <div className="flex flex-col items-center justify-center h-16 shrink-0 px-4">
           <SidebarTrigger />
@@ -184,7 +192,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavProjects projects={data.projects} />
         </SidebarContent>
         <SidebarFooter>
-          <NavUser user={data.user} />
+          <SidebarMenuButton asChild onClick={logout}>
+            <div className="flex items-center justify-start gap-2">
+              <LogOut />
+              <Link href="/admin-login">Logout</Link>
+            </div>
+          </SidebarMenuButton>
+          {/* <NavUser user={data.user} /> */}
         </SidebarFooter>
         <SidebarRail />
       </Sidebar>

@@ -5,7 +5,12 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { AppSidebar } from "@/components/admin/app-sidebar";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarMenuButton,
+  SidebarProvider,
+} from "@/components/ui/sidebar";
+import Link from "next/link";
 
 export default function AuthLayout({
   children,
@@ -41,7 +46,12 @@ export default function AuthLayout({
     <div className="min-h-screen">
       <SidebarProvider>
         <AppSidebar />
-        <SidebarInset>{children}</SidebarInset>
+        <SidebarInset>
+          <SidebarMenuButton asChild>
+            <Link href="/admin">Home</Link>
+          </SidebarMenuButton>
+          {children}
+        </SidebarInset>
       </SidebarProvider>
     </div>
   );
