@@ -1,10 +1,9 @@
 export interface Category {
-  id: string;
+  _id: string;
   name: string;
-  slug: string;
-  description?: string;
   createdAt: string;
   updatedAt: string;
+  __v: number;
 }
 
 export interface CreateCategoryDto {

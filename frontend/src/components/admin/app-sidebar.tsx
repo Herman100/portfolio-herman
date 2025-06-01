@@ -93,11 +93,11 @@ const data = {
 
         {
           title: "Categories",
-          url: "#",
+          url: "/admin/categories",
         },
         {
           title: "Tags",
-          url: "#",
+          url: "/admin/tags",
         },
       ],
     },

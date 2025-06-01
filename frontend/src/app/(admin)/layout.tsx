@@ -46,12 +46,7 @@ export default function AuthLayout({
     <div className="min-h-screen">
       <SidebarProvider>
         <AppSidebar />
-        <SidebarInset>
-          <SidebarMenuButton asChild>
-            <Link href="/admin">Home</Link>
-          </SidebarMenuButton>
-          {children}
-        </SidebarInset>
+        <SidebarInset>{children}</SidebarInset>
       </SidebarProvider>
     </div>
   );

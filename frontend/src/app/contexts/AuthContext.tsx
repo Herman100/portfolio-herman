@@ -176,18 +176,18 @@ export const AuthContextProvider = ({
   }, []);
 
   // Auto-refresh token before it expires
-  useEffect(() => {
-    if (!accessToken || !isInitialized) return;
+  // useEffect(() => {
+  //   if (!accessToken || !isInitialized) return;
 
-    // Refresh token every 14 minutes (assuming 15-minute expiry)
-    const interval = setInterval(() => {
-      refreshAuth().catch(() => {
-        console.log("Auto-refresh failed");
-      });
-    }, 14 * 60 * 1000);
+  //   // Refresh token every 14 minutes (assuming 15-minute expiry)
+  //   const interval = setInterval(() => {
+  //     refreshAuth().catch(() => {
+  //       console.log("Auto-refresh failed");
+  //     });
+  //   }, 14 * 60 * 1000);
 
-    return () => clearInterval(interval);
-  }, [accessToken, refreshAuth, isInitialized]);
+  //   return () => clearInterval(interval);
+  // }, [accessToken, refreshAuth, isInitialized]);
 
   const values = {
     user,
