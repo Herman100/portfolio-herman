@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { tagsService } from "@/services/blog/tags-service";
+import { tagService } from "@/services/tag-service";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,12 +19,12 @@ export default function CreateTagPage() {
     setLoading(true);
 
     try {
-      await tagsService.create({ name });
+      await tagService.create({ name });
       toast({
         title: "Success",
         description: "Tag created successfully",
       });
-      router.push("/admin/blogs/tags");
+      router.push("/admin/tags");
     } catch (error) {
       toast({
         variant: "destructive",

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { tagsService } from "@/services/blog/tags-service";
+import { tagService } from "@/services/tag-service";
 import { Tag } from "@/types/tag";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +19,7 @@ export default function EditTagPage({ params }: { params: { id: string } }) {
   useEffect(() => {
     const fetchTag = async () => {
       try {
-        const data = await tagsService.getById(params.id);
+        const data = await tagService.getById(params.id);
         setTag(data);
         setName(data.name);
       } catch (error) {
@@ -28,7 +28,7 @@ export default function EditTagPage({ params }: { params: { id: string } }) {
           title: "Error",
           description: "Failed to fetch tag",
         });
-        router.push("/admin/blogs/tags");
+        router.push("/admin/tags");
       }
     };
 
@@ -40,12 +40,12 @@ export default function EditTagPage({ params }: { params: { id: string } }) {
     setLoading(true);
 
     try {
-      await tagsService.update(params.id, { name });
+      await tagService.update(params.id, { name });
       toast({
         title: "Success",
         description: "Tag updated successfully",
       });
-      router.push("/admin/blogs/tags");
+      router.push("/admin/tags");
     } catch (error) {
       toast({
         variant: "destructive",

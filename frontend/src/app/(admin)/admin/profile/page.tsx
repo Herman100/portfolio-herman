@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { Mail, User as UserIcon, Calendar, Shield } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/app/contexts/AuthContext";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function ProfilePage() {
   const { user, isLoading } = useAuth();
@@ -39,19 +40,9 @@ export default function ProfilePage() {
   return (
     <div className="container mx-auto py-8 max-w-2xl">
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Profile Information</h1>
-          <div className="flex items-center gap-2">
-            <span
-              className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                user.isActive
-                  ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                  : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-              }`}
-            >
-              {user.isActive ? "Active" : "Inactive"}
-            </span>
-          </div>
+        <div className="flex items-center justify-center gap-5">
+          <SidebarTrigger className="-ml-1" />
+          <h1 className="text-xl font-bold">Profile Information</h1>
         </div>
 
         {/* Personal Information Card */}

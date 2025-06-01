@@ -6,6 +6,7 @@ import { Category } from "@/types/category";
 import { categoriesService } from "@/services/blog/categories-service";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "@/components/ui/loading-spinner";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 interface EditCategoryPageProps {
   params: {
@@ -43,10 +44,15 @@ export default function EditCategoryPage({ params }: EditCategoryPageProps) {
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Edit Category</h1>
-        <p className="text-gray-500 mb-8">Update the category information</p>
+        <div className="flex items-center gap-4 mb-8">
+          <SidebarTrigger className="-ml-1" />
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Edit Category</h1>
+            <p className="text-gray-500">Update the category information</p>
+          </div>
+        </div>
         <CategoryForm mode="update" category={category} />
       </div>
     </div>

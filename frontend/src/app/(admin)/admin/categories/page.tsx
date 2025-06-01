@@ -9,10 +9,23 @@ import { categoriesService } from "@/services/blog/categories-service";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import LoadingSpinner from "@/components/ui/loading-spinner";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(
+    null
+  );
   const router = useRouter();
 
   const fetchCategories = async () => {
@@ -31,18 +44,24 @@ export default function CategoriesPage() {
   }, []);
 
   const handleDelete = async (categoryId: string) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
-      try {
-        await categoriesService.delete(categoryId);
-        fetchCategories();
-      } catch (error) {
-        console.error("Error deleting category:", error);
-      }
+    try {
+      await categoriesService.delete(categoryId);
+      fetchCategories();
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    } finally {
+      setDeleteDialogOpen(false);
+      setCategoryToDelete(null);
     }
   };
 
   const handleEdit = (categoryId: string) => {
     router.push(`/admin/categories/edit/${categoryId}`);
+  };
+
+  const openDeleteDialog = (category: Category) => {
+    setCategoryToDelete(category);
+    setDeleteDialogOpen(true);
   };
 
   if (isLoading) {
@@ -53,6 +72,7 @@ export default function CategoriesPage() {
     <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <SidebarTrigger className="-ml-1" />
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold mb-2">Categories</h1>
             <p className="text-sm sm:text-base text-gray-500">
@@ -90,7 +110,7 @@ export default function CategoriesPage() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleDelete(category._id)}
+                    onClick={() => openDeleteDialog(category)}
                     className="h-8 w-8"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -106,6 +126,37 @@ export default function CategoriesPage() {
           ))}
         </div>
       </div>
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Category</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete the category "
+              {categoryToDelete?.name}"? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setDeleteDialogOpen(false);
+                setCategoryToDelete(null);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() =>
+                categoryToDelete && handleDelete(categoryToDelete._id)
+              }
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
