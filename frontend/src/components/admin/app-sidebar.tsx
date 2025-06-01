@@ -28,6 +28,7 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { ThemeSwitcher } from "../themes/theme-toggle";
 
 const data = {
   user: {
@@ -174,8 +175,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarHeader>
           <TeamSwitcher teams={data.teams} />
         </SidebarHeader>
-        <div className="flex items-end justify-center h-16 shrink-0 px-4">
+        <div className="flex flex-col items-center justify-center h-16 shrink-0 px-4">
           <SidebarTrigger />
+          <ThemeSwitcher />
         </div>
         <SidebarContent>
           <NavMain items={data.navMain} />
