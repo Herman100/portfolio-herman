@@ -1,5 +1,6 @@
 import { Router } from "express";
 import blogCategoryController from "../controllers/blog-category.controller.js";
+import tagController from "../controllers/tag.controller.js";
 import { verifyAccessToken } from "../middleware/admin.middleware.js";
 
 const router = Router();
@@ -30,6 +31,13 @@ router.delete(
     verifyAccessToken,
     blogCategoryController.deleteCategory
 );
+
+// Tag Routes
+router.post("/tags", verifyAccessToken, tagController.createTag);
+router.get("/tags", verifyAccessToken, tagController.getAllTags);
+router.get("/tags/:id", verifyAccessToken, tagController.getTagById);
+router.put("/tags/:id", verifyAccessToken, tagController.updateTag);
+router.delete("/tags/:id", verifyAccessToken, tagController.deleteTag);
 
 // Blog Routes (to be implemented)
 // router.post("/", createBlog);
