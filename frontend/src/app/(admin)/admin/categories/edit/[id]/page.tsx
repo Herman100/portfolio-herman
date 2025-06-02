@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { CategoryForm } from "../../../../../../components/admin/category-form";
 import { Category } from "@/types/category";
 import { categoriesService } from "@/services/blog/categories-service";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
@@ -12,15 +12,19 @@ interface EditCategoryPageProps {
   params: {
     id: string;
   };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default function EditCategoryPage({ id }: { id: string }) {
+export default function EditCategoryPage() {
   const [category, setCategory] = useState<Category | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const params = useParams();
 
   useEffect(() => {
     const fetchCategory = async () => {
+      const id = Array.isArray(params.id) ? params.id[0] : params.id;
+      if (!id) return;
       try {
         const data = await categoriesService.getById(id);
         setCategory(data);
@@ -33,7 +37,7 @@ export default function EditCategoryPage({ id }: { id: string }) {
     };
 
     fetchCategory();
-  }, [id, router]);
+  }, [params.id, router]);
 
   if (isLoading) {
     return <LoadingSpinner size="lg" color="primary" />;
