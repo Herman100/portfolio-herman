@@ -10,6 +10,7 @@ import React, {
 import axios from "axios";
 import { User } from "@/types/user";
 import { useRouter } from "next/navigation";
+import apiClient from "@/services/api-client";
 
 interface AuthContextType {
   // State
@@ -17,6 +18,7 @@ interface AuthContextType {
   accessToken: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  isInitialized: boolean; // New flag to track if auth check is complete
 
   // Actions
   login: (
@@ -38,24 +40,14 @@ export const AuthContextProvider = ({
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const router = useRouter();
-
-  const baseURL =
-    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
   // Computed property
   const isAuthenticated = !!user && !!accessToken;
 
-  // Configure axios instance with interceptors
-  const apiClient = axios.create({
-    baseURL,
-    withCredentials: true, // Important for cookies
-  });
-
   // Request interceptor to add auth header
   apiClient.interceptors.request.use((config) => {
-    // console.log("Request config:", config);
-
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -73,6 +65,7 @@ export const AuthContextProvider = ({
           error.config.headers.Authorization = `Bearer ${accessToken}`;
           return apiClient.request(error.config);
         } catch (refreshError) {
+          console.error("Token refresh failed:", refreshError);
           logout();
         }
       }
@@ -94,6 +87,8 @@ export const AuthContextProvider = ({
 
       if (response.data.success) {
         const { accessToken: token } = response.data.data;
+
+        console.log("Login successful, access token:", token);
 
         // Set access token
         setAccessToken(token);
@@ -135,10 +130,11 @@ export const AuthContextProvider = ({
       setUser(null);
       setAccessToken(null);
       setIsLoading(false);
+      router.push("/admin-login");
     }
   };
 
-  const refreshAuth = async (): Promise<void> => {
+  const refreshAuth = useCallback(async (): Promise<void> => {
     try {
       const response = await apiClient.post("/admin/refresh");
 
@@ -147,49 +143,58 @@ export const AuthContextProvider = ({
         setAccessToken(newToken);
 
         // Optionally refresh user data
-        const userResponse = await apiClient.get("/admin/profile");
+        const userResponse = await apiClient.get("/admin/profile", {
+          headers: { Authorization: `Bearer ${newToken}` },
+        });
         if (userResponse.data.success) {
           setUser(userResponse.data.data);
         }
       }
     } catch (error) {
       console.error("Token refresh failed:", error);
+      setUser(null);
+      setAccessToken(null);
       throw error;
     }
-  };
+  }, [apiClient]);
 
   // Check authentication status on initial load
-  useCallback(() => {
+  useEffect(() => {
     const checkAuth = async () => {
       try {
+        setIsLoading(true);
         await refreshAuth();
       } catch (error) {
         console.error("Error during authentication check:", error);
+      } finally {
+        setIsLoading(false);
+        setIsInitialized(true); // Mark as initialized regardless of success/failure
       }
     };
 
     checkAuth();
-  }, [refreshAuth]);
+  }, []);
 
   // Auto-refresh token before it expires
-  useEffect(() => {
-    if (!accessToken) return;
+  // useEffect(() => {
+  //   if (!accessToken || !isInitialized) return;
 
-    // Refresh token every 14 minutes (assuming 15-minute expiry)
-    const interval = setInterval(() => {
-      refreshAuth().catch(() => {
-        console.log("Auto-refresh failed");
-      });
-    }, 14 * 60 * 1000);
+  //   // Refresh token every 14 minutes (assuming 15-minute expiry)
+  //   const interval = setInterval(() => {
+  //     refreshAuth().catch(() => {
+  //       console.log("Auto-refresh failed");
+  //     });
+  //   }, 14 * 60 * 1000);
 
-    return () => clearInterval(interval);
-  }, [accessToken, refreshAuth]);
+  //   return () => clearInterval(interval);
+  // }, [accessToken, refreshAuth, isInitialized]);
 
   const values = {
     user,
     accessToken,
     isLoading,
     isAuthenticated,
+    isInitialized,
     login,
     logout,
     refreshAuth,

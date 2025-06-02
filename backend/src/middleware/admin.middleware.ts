@@ -71,7 +71,6 @@ export const verifyAccessToken = (
 
         // Extract the token
         const token = authHeader.split(" ")[1];
-        console.log("Extracted JWT:", token);
 
         if (!token) {
             return res.status(401).json({ message: "Token missing" });
@@ -79,8 +78,6 @@ export const verifyAccessToken = (
 
         // Verify and decode the token
         const decoded = jwt.verify(token, access_secret) as Request["user"];
-
-        console.log("Decoded JWT:", decoded);
 
         // Attach user data to request object for use in route handlers
         req.user = decoded;

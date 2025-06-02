@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/themes/theme-provider";
 import Head from "next/head";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { Analytics } from "@vercel/analytics/next";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Herman Kwamebour | Portfolio",
@@ -48,6 +49,7 @@ export default function RootLayout({
           <AuthContextProvider>
             {children}
             <Analytics />
+            <Toaster />
           </AuthContextProvider>
         </ThemeProvider>
       </body>
