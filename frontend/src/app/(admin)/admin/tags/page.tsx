@@ -40,6 +40,7 @@ export default function TagsPage() {
       const data = await tagService.getAll();
       setTags(data);
     } catch (error) {
+      console.error(error);
       toast({
         variant: "destructive",
         title: "Error",
