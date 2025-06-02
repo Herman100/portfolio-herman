@@ -73,7 +73,7 @@ export default function BlogsPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <SidebarTrigger className="-ml-1" />
         <h1 className="text-2xl font-bold">Blogs</h1>
-        <Button onClick={() => router.push("/admin/blogs/create")}>
+        <Button onClick={() => router.push("/admin/blogs/editor")}>
           Create New Blog
         </Button>
       </div>
