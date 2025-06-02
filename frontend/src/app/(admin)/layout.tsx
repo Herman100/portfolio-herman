@@ -29,7 +29,7 @@ export default function AuthLayout({
   if (!isInitialized || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <LoadingSpinner size="lg" color="primary" />
+        <LoadingSpinner size="full" color="primary" />
       </div>
     );
   }
@@ -37,7 +37,7 @@ export default function AuthLayout({
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <LoadingSpinner size="lg" text="Redirecting to login..." />
+        <LoadingSpinner size="full" text="Redirecting to login..." />
       </div>
     );
   }

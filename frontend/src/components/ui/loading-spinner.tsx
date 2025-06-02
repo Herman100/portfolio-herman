@@ -18,7 +18,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     md: "w-6 h-6",
     lg: "w-8 h-8",
     xl: "w-12 h-12",
-    full: "w-screen h-screen",
+    full: "w-32 h-32",
     parent: "w-full h-full",
   };
 

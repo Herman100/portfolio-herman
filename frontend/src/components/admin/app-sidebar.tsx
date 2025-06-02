@@ -193,10 +193,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarContent>
         <SidebarFooter>
           <SidebarMenuButton asChild onClick={logout}>
-            <div className="flex items-center justify-start gap-2">
+            <Link
+              href="/admin-login"
+              className="flex items-center justify-start gap-2"
+            >
               <LogOut />
-              <Link href="/admin-login">Logout</Link>
-            </div>
+              <span>Logout</span>
+            </Link>
           </SidebarMenuButton>
           {/* <NavUser user={data.user} /> */}
         </SidebarFooter>
