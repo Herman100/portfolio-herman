@@ -43,7 +43,7 @@ export default function Page() {
             Welcome back, {user?.name || user?.email}!
           </h1>
           <p className="text-muted-foreground">
-            Here's what's happening with your admin dashboard.
+            Here&#39;s what&#39;s happening with your admin dashboard.
           </p>
         </div>
 
