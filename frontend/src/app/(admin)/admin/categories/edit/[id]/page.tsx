@@ -14,7 +14,7 @@ interface EditCategoryPageProps {
   };
 }
 
-export default function EditCategoryPage({ params }: EditCategoryPageProps) {
+export default function EditCategoryPage({ id }: { id: string }) {
   const [category, setCategory] = useState<Category | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function EditCategoryPage({ params }: EditCategoryPageProps) {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const data = await categoriesService.getById(params.id);
+        const data = await categoriesService.getById(id);
         setCategory(data);
       } catch (error) {
         console.error("Error fetching category:", error);
@@ -33,7 +33,7 @@ export default function EditCategoryPage({ params }: EditCategoryPageProps) {
     };
 
     fetchCategory();
-  }, [params.id, router]);
+  }, [id, router]);
 
   if (isLoading) {
     return <LoadingSpinner size="lg" color="primary" />;
