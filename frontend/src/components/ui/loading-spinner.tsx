@@ -1,14 +1,14 @@
 import React from "react";
 
 interface LoadingSpinnerProps {
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl" | "full" | "parent";
   color?: "primary" | "secondary" | "white" | "muted";
   text?: string;
   className?: string;
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
-  size = "md",
+  size = "full",
   color = "primary",
   text,
   className = "",
@@ -18,6 +18,8 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     md: "w-6 h-6",
     lg: "w-8 h-8",
     xl: "w-12 h-12",
+    full: "w-screen h-screen",
+    parent: "w-full h-full",
   };
 
   const colorClasses = {
@@ -29,7 +31,9 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center gap-2 ${className}`}
+      className={`flex flex-col items-center justify-center gap-2 bg-black ${
+        size === "full" ? "fixed inset-0" : ""
+      } ${className}`}
     >
       <div
         className={`
