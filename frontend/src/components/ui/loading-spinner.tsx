@@ -19,7 +19,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     lg: "w-8 h-8",
     xl: "w-12 h-12",
     full: "w-32 h-32",
-    parent: "w-full h-full",
+    parent: "w-16 h-16",
   };
 
   const colorClasses = {
@@ -31,9 +31,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center gap-2 bg-black ${
-        size === "full" ? "fixed inset-0" : ""
-      } ${className}`}
+      className={`flex flex-col items-center justify-center gap-2 bg-black fixed inset-0 w-screen h-screen ${className}`}
     >
       <div
         className={`

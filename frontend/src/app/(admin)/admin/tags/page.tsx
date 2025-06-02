@@ -60,6 +60,7 @@ export default function TagsPage() {
       });
       fetchTags();
     } catch (error) {
+      console.error(error);
       toast({
         variant: "destructive",
         title: "Error",
@@ -85,7 +86,11 @@ export default function TagsPage() {
   }, [fetchTags]);
 
   if (loading) {
-    return <LoadingSpinner size="lg" color="primary" />;
+    return (
+      <div>
+        <LoadingSpinner size="parent" color="primary" />
+      </div>
+    );
   }
 
   return (
