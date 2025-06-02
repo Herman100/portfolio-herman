@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Tag } from "@/types/tag";
 import { tagService } from "@/services/tag-service";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ export default function TagsPage() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [tagToDelete, setTagToDelete] = useState<Tag | null>(null);
 
-  const fetchTags = async () => {
+  const fetchTags = useCallback(async () => {
     try {
       const data = await tagService.getAll();
       setTags(data);
@@ -49,7 +49,7 @@ export default function TagsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -82,7 +82,7 @@ export default function TagsPage() {
 
   useEffect(() => {
     fetchTags();
-  }, []);
+  }, [fetchTags]);
 
   if (loading) {
     return <LoadingSpinner size="lg" color="primary" />;
@@ -162,8 +162,8 @@ export default function TagsPage() {
           <DialogHeader>
             <DialogTitle>Delete Tag</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete the tag "{tagToDelete?.name}"?
-              This action cannot be undone.
+              Are you sure you want to delete the tag &ldquo;{tagToDelete?.name}
+              &rdquo;? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

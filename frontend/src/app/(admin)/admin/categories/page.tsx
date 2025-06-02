@@ -132,8 +132,8 @@ export default function CategoriesPage() {
           <DialogHeader>
             <DialogTitle>Delete Category</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete the category "
-              {categoryToDelete?.name}"? This action cannot be undone.
+              Are you sure you want to delete the category &#34;
+              {categoryToDelete?.name}&#34;? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

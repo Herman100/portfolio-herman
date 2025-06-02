@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
-import { Blog, PaginatedBlogs } from "@/types/blog";
+import { BlogPost, PaginatedBlogPosts } from "@/types/blog";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -18,11 +18,11 @@ import {
 } from "@/components/ui/dialog";
 
 export default function BlogsPage() {
-  const [blogs, setBlogs] = useState<PaginatedBlogs | null>(null);
+  const [blogs, setBlogs] = useState<PaginatedBlogPosts | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [blogToDelete, setBlogToDelete] = useState<Blog | null>(null);
+  const [blogToDelete, setBlogToDelete] = useState<BlogPost | null>(null);
   const router = useRouter();
 
   const fetchBlogs = async (page: number) => {
@@ -59,7 +59,7 @@ export default function BlogsPage() {
     router.push(`/admin/blogs/edit/${blogId}`);
   };
 
-  const openDeleteDialog = (blog: Blog) => {
+  const openDeleteDialog = (blog: BlogPost) => {
     setBlogToDelete(blog);
     setDeleteDialogOpen(true);
   };
@@ -79,7 +79,7 @@ export default function BlogsPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {blogs?.blogs.map((blog) => (
+        {blogs?.blogs.map((blog: BlogPost) => (
           <Card key={blog._id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle className="text-xl">{blog.title}</CardTitle>
@@ -87,10 +87,7 @@ export default function BlogsPage() {
             <CardContent>
               <div className="space-y-2">
                 <p className="text-sm text-gray-500">
-                  Published: {format(new Date(blog.publishedAt), "PPP")}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Author: {blog.author.name}
+                  Created: {format(new Date(blog.createdAt), "PPP")}
                 </p>
                 <div className="flex justify-end space-x-2 mt-4">
                   <Button
@@ -143,8 +140,8 @@ export default function BlogsPage() {
           <DialogHeader>
             <DialogTitle>Delete Blog</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete the blog "{blogToDelete?.title}"?
-              This action cannot be undone.
+              Are you sure you want to delete the blog &#34;
+              {blogToDelete?.title}&#34;? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

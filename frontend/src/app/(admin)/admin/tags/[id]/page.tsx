@@ -33,7 +33,7 @@ export default function EditTagPage({ params }: { params: { id: string } }) {
     };
 
     fetchTag();
-  }, [params.id, router]);
+  }, [params.id, router, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
