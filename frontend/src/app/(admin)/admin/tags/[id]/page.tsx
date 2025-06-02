@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { tagService } from "@/services/tag-service";
 import { Tag } from "@/types/tag";
 import { Button } from "@/components/ui/button";
@@ -9,20 +9,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 
-export default function EditTagPage({ params }: { params: { id: string } }) {
+export default function EditTagPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [tag, setTag] = useState<Tag | null>(null);
   const [name, setName] = useState("");
+  const params = useParams();
+  const tagId = Array.isArray(params.id) ? params.id[0] : params.id;
 
   useEffect(() => {
     const fetchTag = async () => {
+      if (!tagId) return;
       try {
-        const data = await tagService.getById(params.id);
+        const data = await tagService.getById(tagId);
         setTag(data);
         setName(data.name);
       } catch (error) {
+        console.error(error);
         toast({
           variant: "destructive",
           title: "Error",
@@ -33,20 +37,22 @@ export default function EditTagPage({ params }: { params: { id: string } }) {
     };
 
     fetchTag();
-  }, [params.id, router, toast]);
+  }, [tagId, router, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      await tagService.update(params.id, { name });
+      if (!tagId) return;
+      await tagService.update(tagId, { name });
       toast({
         title: "Success",
         description: "Tag updated successfully",
       });
       router.push("/admin/tags");
     } catch (error) {
+      console.error(error);
       toast({
         variant: "destructive",
         title: "Error",
