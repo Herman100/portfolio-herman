@@ -238,7 +238,7 @@ export default function EditorPage() {
                   onUploadProgress={handleCoverImageUpload.onUploadProgress}
                   onSuccess={handleCoverImageUpload.onSuccess}
                   onError={handleCoverImageUpload.onError}
-                  folder="/blog-covers"
+                  // folder="/blog-covers"
                   useUniqueFileName={true}
                   button={
                     <Button

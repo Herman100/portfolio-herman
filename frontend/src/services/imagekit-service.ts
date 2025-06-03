@@ -26,7 +26,8 @@ export const imagekitService = {
     try {
       const response = await apiClient.get("/imagekit/upload-image-video");
       console.log(response.data);
-      return response.data;
+      const { signature, token, expire } = response.data;
+      return { signature, token, expire };
     } catch (error) {
       console.error("Error fetching authentication parameters:", error);
       throw new Error("Failed to fetch authentication parameters");
