@@ -1,6 +1,7 @@
 import { Quill } from "react-quill-new";
 import { IKUpload } from "@/services/imagekit-service";
 import { UploadProgress } from "@/services/imagekit-service";
+import { forwardRef } from "react";
 
 const Inline = Quill.import("blots/inline") as any;
 const Block = Quill.import("blots/block") as any;
@@ -63,9 +64,11 @@ export const createUploadHandler = (
     onUploadComplete: (url) => {
       const range = quill.getSelection(true);
       if (type === "image") {
-        quill.insertEmbed(range.index, "image", url);
+        quill.insertEmbed(range.index, "image", url, "user");
+        quill.setSelection(range.index + 1);
       } else {
-        quill.insertEmbed(range.index, "video", url);
+        quill.insertEmbed(range.index, "video", url, "user");
+        quill.setSelection(range.index + 1);
       }
       quill.enable(true);
     },
@@ -76,32 +79,46 @@ export const createUploadHandler = (
   };
 };
 
-export const ImageUploadButton = ({ quill }: { quill: any }) => {
-  const uploadHandler = createUploadHandler(quill, "image");
+export const ImageUploadButton = forwardRef<HTMLInputElement, { quill: any }>(
+  ({ quill }, ref) => {
+    const uploadHandler = createUploadHandler(quill, "image");
 
-  return (
-    <IKUpload
-      onUploadStart={uploadHandler.onUploadStart}
-      onUploadProgress={uploadHandler.onUploadProgress}
-      onSuccess={(res) => uploadHandler.onUploadComplete(res.url)}
-      onError={(err) => uploadHandler.onUploadError(err.message)}
-      folder="/blog-images"
-      useUniqueFileName={true}
-    />
-  );
-};
+    return (
+      <IKUpload
+        ref={ref}
+        onUploadStart={uploadHandler.onUploadStart}
+        onUploadProgress={uploadHandler.onUploadProgress}
+        onSuccess={(res: { url: string }) =>
+          uploadHandler.onUploadComplete(res.url)
+        }
+        onError={(err: { message: string }) =>
+          uploadHandler.onUploadError(err.message)
+        }
+        folder="/blog-images"
+        useUniqueFileName={true}
+      />
+    );
+  }
+);
 
-export const VideoUploadButton = ({ quill }: { quill: any }) => {
-  const uploadHandler = createUploadHandler(quill, "video");
+export const VideoUploadButton = forwardRef<HTMLInputElement, { quill: any }>(
+  ({ quill }, ref) => {
+    const uploadHandler = createUploadHandler(quill, "video");
 
-  return (
-    <IKUpload
-      onUploadStart={uploadHandler.onUploadStart}
-      onUploadProgress={uploadHandler.onUploadProgress}
-      onSuccess={(res) => uploadHandler.onUploadComplete(res.url)}
-      onError={(err) => uploadHandler.onUploadError(err.message)}
-      folder="/blog-videos"
-      useUniqueFileName={true}
-    />
-  );
-};
+    return (
+      <IKUpload
+        ref={ref}
+        onUploadStart={uploadHandler.onUploadStart}
+        onUploadProgress={uploadHandler.onUploadProgress}
+        onSuccess={(res: { url: string }) =>
+          uploadHandler.onUploadComplete(res.url)
+        }
+        onError={(err: { message: string }) =>
+          uploadHandler.onUploadError(err.message)
+        }
+        folder="/blog-videos"
+        useUniqueFileName={true}
+      />
+    );
+  }
+);
