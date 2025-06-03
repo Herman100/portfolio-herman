@@ -29,6 +29,7 @@ import { X, Upload } from "lucide-react";
 import { IKContext, IKUpload } from "@/services/imagekit-service";
 import { QuillToolbar } from "@/components/editor/quill-toolbar";
 import { Progress } from "@/components/ui/progress";
+import { IKImage } from "imagekitio-react";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -49,6 +50,8 @@ export default function EditorPage() {
   const quillRef = useRef<ReactQuill>(null);
   const { toast } = useToast();
   const router = useRouter();
+
+  const urlEndpoint = "https://ik.imagekit.io/hkb/";
 
   const {
     register,
@@ -218,6 +221,11 @@ export default function EditorPage() {
                 className="w-32 h-32 object-cover rounded-md"
               />
             )}
+            <IKImage
+              className="w-32 h-32 object-cover rounded-md"
+              urlEndpoint={urlEndpoint}
+              path="default-image.jpg"
+            />
             <div className="flex-1">
               <IKContext>
                 <IKUpload
