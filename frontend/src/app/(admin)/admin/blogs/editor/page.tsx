@@ -26,10 +26,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { X, Upload } from "lucide-react";
-import { IKContext, IKUpload } from "@/services/imagekit-service";
+import { imagekitConfig, imagekitService } from "@/services/imagekit-service";
 import { QuillToolbar } from "@/components/editor/quill-toolbar";
 import { Progress } from "@/components/ui/progress";
-import { IKImage } from "imagekitio-react";
+import { IKContext, IKImage, IKUpload } from "imagekitio-react";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -52,6 +52,7 @@ export default function EditorPage() {
   const router = useRouter();
 
   const urlEndpoint = "https://ik.imagekit.io/hkb/";
+  const publicKey = process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY;
 
   const {
     register,
@@ -227,7 +228,11 @@ export default function EditorPage() {
               path="default-image.jpg"
             />
             <div className="flex-1">
-              <IKContext>
+              <IKContext
+                publicKey={imagekitConfig.publicKey}
+                urlEndpoint={imagekitConfig.urlEndpoint}
+                authenticator={imagekitService.getImageKitAuth}
+              >
                 <IKUpload
                   onUploadStart={handleCoverImageUpload.onUploadStart}
                   onUploadProgress={handleCoverImageUpload.onUploadProgress}

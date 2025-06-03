@@ -27,7 +27,7 @@ import uploadRoutes from "./routes/upload.route.js";
 app.use("/api/v1/healthcheck", healthcheckRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/blogs", blogRoutes);
-app.use("/", uploadRoutes);
+app.use("/api/v1/imagekit", uploadRoutes);
 
 //handle errors
 app.use(errorHandler);
