@@ -2,7 +2,7 @@
 
 import "react-quill-new/dist/quill.snow.css";
 import ReactQuill from "react-quill-new";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -25,7 +25,10 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
+import { X, Upload } from "lucide-react";
+import { IKContext, IKUpload } from "@/services/imagekit-service";
+import { QuillToolbar } from "@/components/editor/quill-toolbar";
+import { Progress } from "@/components/ui/progress";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -41,6 +44,9 @@ export default function EditorPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const quillRef = useRef<ReactQuill>(null);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -115,6 +121,32 @@ export default function EditorPage() {
     }
   };
 
+  const handleCoverImageUpload = {
+    onUploadStart: () => {
+      setIsUploading(true);
+      setUploadProgress(0);
+    },
+    onUploadProgress: (progress: number) => {
+      setUploadProgress(progress);
+    },
+    onSuccess: (res: { url: string }) => {
+      setValue("coverImage", res.url);
+      setIsUploading(false);
+      toast({
+        title: "Success",
+        description: "Cover image uploaded successfully",
+      });
+    },
+    onError: (err: Error) => {
+      setIsUploading(false);
+      toast({
+        title: "Error",
+        description: "Failed to upload cover image",
+        variant: "destructive",
+      });
+    },
+  };
+
   return (
     <div className="container mx-auto py-6 space-y-6 px-2 sm:px-6">
       <h1 className="text-2xl font-bold">Create New Blog Post</h1>
@@ -177,22 +209,56 @@ export default function EditorPage() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="coverImage">Cover Image URL (Optional)</Label>
-          <Input
-            id="coverImage"
-            {...register("coverImage")}
-            placeholder="Enter cover image URL"
-          />
+          <Label>Cover Image</Label>
+          <div className="flex items-center gap-4">
+            {watch("coverImage") && (
+              <img
+                src={watch("coverImage")}
+                alt="Cover"
+                className="w-32 h-32 object-cover rounded-md"
+              />
+            )}
+            <div className="flex-1">
+              <IKContext>
+                <IKUpload
+                  onUploadStart={handleCoverImageUpload.onUploadStart}
+                  onUploadProgress={handleCoverImageUpload.onUploadProgress}
+                  onSuccess={handleCoverImageUpload.onSuccess}
+                  onError={handleCoverImageUpload.onError}
+                  folder="/blog-covers"
+                  useUniqueFileName={true}
+                  button={
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={isUploading}
+                    >
+                      <Upload className="h-4 w-4 mr-2" />
+                      Upload Cover Image
+                    </Button>
+                  }
+                />
+              </IKContext>
+              {isUploading && (
+                <Progress value={uploadProgress} className="mt-2" />
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="space-y-2">
           <Label>Content</Label>
-          <div className="h-[400px] border rounded-md">
+          <div className="border rounded-md">
+            <QuillToolbar quill={quillRef.current?.getEditor()} />
             <ReactQuill
+              ref={quillRef}
               theme="snow"
               value={watch("content")}
               onChange={(content) => setValue("content", content)}
-              className="h-[350px] p-4"
+              className="h-[350px]"
+              modules={{
+                toolbar: "#toolbar",
+              }}
             />
           </div>
           {errors.content && (
