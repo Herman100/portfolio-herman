@@ -21,11 +21,13 @@ import healthcheckRoutes from "./routes/healthcheck.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import errorHandler from "./middleware/error.middleware.js";
 import blogRoutes from "./routes/blog.routes.js";
+import uploadRoutes from "./routes/upload.route.js";
 
 // using routes
 app.use("/api/v1/healthcheck", healthcheckRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/blogs", blogRoutes);
+app.use("/", uploadRoutes);
 
 //handle errors
 app.use(errorHandler);
