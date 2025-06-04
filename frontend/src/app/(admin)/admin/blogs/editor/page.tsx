@@ -1,7 +1,6 @@
 "use client";
 
 import "react-quill-new/dist/quill.snow.css";
-import ReactQuill from "react-quill-new";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,9 +26,9 @@ import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { X, Upload } from "lucide-react";
 import { imagekitConfig, imagekitService } from "@/services/imagekit-service";
-import { QuillToolbar } from "@/components/editor/quill-toolbar";
 import { Progress } from "@/components/ui/progress";
-import { IKContext, IKImage, IKUpload } from "imagekitio-react";
+import { IKContext, IKUpload } from "imagekitio-react";
+import CustomQuillEditor from "@/components/editor/quill-toolbar";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -47,12 +46,9 @@ export default function EditorPage() {
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
-  const quillRef = useRef<ReactQuill>(null);
+  const uploadRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const router = useRouter();
-
-  const urlEndpoint = "https://ik.imagekit.io/hkb/";
-  const publicKey = process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY;
 
   const {
     register,
@@ -65,6 +61,7 @@ export default function EditorPage() {
     defaultValues: {
       category: "general",
       tags: [],
+      content: "", // Initialize content
     },
   });
 
@@ -151,6 +148,11 @@ export default function EditorPage() {
     },
   };
 
+  // Handle content changes from the custom editor
+  const handleContentChange = (content: string) => {
+    setValue("content", content);
+  };
+
   return (
     <div className="container mx-auto py-6 space-y-6 px-2 sm:px-6">
       <h1 className="text-2xl font-bold">Create New Blog Post</h1>
@@ -222,11 +224,6 @@ export default function EditorPage() {
                 className="w-32 h-32 object-cover rounded-md"
               />
             )}
-            <IKImage
-              className="w-32 h-32 object-cover rounded-md"
-              urlEndpoint={urlEndpoint}
-              path="default-image.jpg"
-            />
             <div className="flex-1">
               <IKContext
                 publicKey={imagekitConfig.publicKey}
@@ -234,23 +231,26 @@ export default function EditorPage() {
                 authenticator={imagekitService.getImageKitAuth}
               >
                 <IKUpload
+                  ref={uploadRef}
                   onUploadStart={handleCoverImageUpload.onUploadStart}
                   onUploadProgress={handleCoverImageUpload.onUploadProgress}
                   onSuccess={handleCoverImageUpload.onSuccess}
                   onError={handleCoverImageUpload.onError}
-                  // folder="/blog-covers"
                   useUniqueFileName={true}
-                  button={
-                    <Button
-                      type="button"
-                      variant="outline"
-                      disabled={isUploading}
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      Upload Cover Image
-                    </Button>
-                  }
+                  className="hidden"
                 />
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={isUploading}
+                  className="cursor-pointer"
+                  onClick={() => uploadRef.current?.click()}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  {watch("coverImage")
+                    ? "Change Cover Photo"
+                    : "Upload Cover Image"}
+                </Button>
               </IKContext>
               {isUploading && (
                 <Progress value={uploadProgress} className="mt-2" />
@@ -262,16 +262,11 @@ export default function EditorPage() {
         <div className="space-y-2">
           <Label>Content</Label>
           <div className="border rounded-md">
-            <QuillToolbar quill={quillRef.current?.getEditor()} />
-            <ReactQuill
-              ref={quillRef}
-              theme="snow"
-              value={watch("content")}
-              onChange={(content) => setValue("content", content)}
-              className="h-[350px]"
-              modules={{
-                toolbar: "#toolbar",
-              }}
+            <CustomQuillEditor
+              value={watch("content") || ""}
+              onChange={handleContentChange}
+              placeholder="Start writing your blog post content..."
+              className="min-h-[400px]"
             />
           </div>
           {errors.content && (
