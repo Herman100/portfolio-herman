@@ -12,6 +12,23 @@ interface CustomQuillEditorProps {
   className?: string;
 }
 
+interface ImageKitResponse {
+  fileId: string;
+  name: string;
+  size: number;
+  versionInfo: {
+    id: string;
+    name: string;
+  };
+  filePath: string;
+  url: string;
+  fileType: string;
+  height: number;
+  width: number;
+  thumbnailUrl: string;
+  AITags: null;
+}
+
 /*
  * Custom toolbar component with ImageKit integration
  */
@@ -26,7 +43,10 @@ const CustomToolbar = ({
   isUploading: boolean;
   uploadProgress: number;
 }) => (
-  <div id="toolbar" className="flex items-center gap-2 p-2 border-b bg-gray-50">
+  <div
+    id="toolbar"
+    className="flex items-center gap-2 p-2 border-b bg-gray-50 hidden"
+  >
     {/* Text formatting */}
     <select className="ql-header" defaultValue="">
       <option value="1">Heading 1</option>
@@ -129,7 +149,7 @@ const ImageUploadComponent = React.forwardRef<
         ref={ref}
         onUploadStart={onUploadStart}
         onUploadProgress={onUploadProgress}
-        onSuccess={(res: { url: string }) => onUploadComplete(res.url)}
+        onSuccess={(res: ImageKitResponse) => onUploadComplete(res.url)}
         onError={(err: { message: string }) => {
           console.error("Image upload error:", err.message);
           onUploadError();
@@ -213,10 +233,24 @@ const CustomQuillEditor: React.FC<CustomQuillEditorProps> = ({
       const index = range ? range.index : quill.getLength();
 
       if (type === "image") {
+        // Insert image with proper formatting
         quill.insertEmbed(index, "image", url, "user");
+        // Apply formatting after insertion
+        quill.formatText(index, 1, {
+          width: "100%",
+          height: "auto",
+          style:
+            "max-width: 100%; height: auto; border-radius: 4px; margin: 8px 0;",
+        });
       } else {
         // For video, we'll insert HTML directly
         quill.insertEmbed(index, "video", url, "user");
+        // Apply formatting after insertion
+        quill.formatText(index, 1, {
+          controls: true,
+          style:
+            "max-width: 100%; height: auto; border-radius: 4px; margin: 8px 0;",
+        });
       }
 
       quill.setSelection(index + 1);
@@ -291,7 +325,17 @@ const CustomQuillEditor: React.FC<CustomQuillEditorProps> = ({
    */
   const modules = {
     toolbar: {
-      container: "#toolbar",
+      container: [
+        [{ header: [1, 2, 3, false] }],
+        [{ font: ["sans-serif", "serif", "monospace"] }],
+        [{ size: ["small", "normal", "large", "huge"] }],
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["blockquote", "code-block"],
+        [{ align: [] }],
+        ["link", "image", "video"],
+        ["clean"],
+      ],
       handlers: {
         image: triggerImageUpload,
         video: triggerVideoUpload,
@@ -313,18 +357,14 @@ const CustomQuillEditor: React.FC<CustomQuillEditorProps> = ({
     "italic",
     "underline",
     "strike",
-    "blockquote",
-    "code-block",
     "list",
     "bullet",
-    "indent",
+    "blockquote",
+    "code-block",
+    "align",
     "link",
     "image",
     "video",
-    "align",
-    "direction",
-    "color",
-    "background",
   ];
 
   return (
