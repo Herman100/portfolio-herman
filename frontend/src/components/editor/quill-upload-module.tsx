@@ -1,7 +1,6 @@
 import { Quill } from "react-quill-new";
-import { IKUpload } from "@/services/imagekit-service";
-import { UploadProgress } from "@/services/imagekit-service";
 import { forwardRef } from "react";
+import { IKUpload, UploadProgress } from "@/services/imagekit-service";
 
 const Inline = Quill.import("blots/inline") as any;
 const Block = Quill.import("blots/block") as any;
