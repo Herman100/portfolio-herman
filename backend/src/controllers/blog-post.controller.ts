@@ -27,7 +27,7 @@ const blogPostController = {
     // Get all blog posts
     getAllBlogPosts: asyncHandler(
         async (req: Request, res: Response): Promise<void> => {
-            const { page = 0, limit = 10 } = req.params;
+            const { page = 0, limit = 1 } = req.params;
 
             const total = await BlogPost.countDocuments();
             const totalPages = Math.ceil(total / Number(limit));
