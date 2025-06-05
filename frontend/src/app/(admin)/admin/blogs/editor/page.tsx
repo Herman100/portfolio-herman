@@ -91,13 +91,16 @@ export default function EditorPage() {
 
   const toggleTag = (tagId: string) => {
     const currentTags = watch("tags");
-    if (currentTags.includes(tagId)) {
+    const tag = tags.find((t) => t._id === tagId);
+    if (!tag) return;
+
+    if (currentTags.includes(tag.name)) {
       setValue(
         "tags",
-        currentTags.filter((id) => id !== tagId)
+        currentTags.filter((name) => name !== tag.name)
       );
     } else {
-      setValue("tags", [...currentTags, tagId]);
+      setValue("tags", [...currentTags, tag.name]);
     }
   };
 
@@ -198,12 +201,14 @@ export default function EditorPage() {
             {tags.map((tag) => (
               <Badge
                 key={tag._id}
-                variant={selectedTags.includes(tag._id) ? "default" : "outline"}
+                variant={
+                  selectedTags.includes(tag.name) ? "default" : "outline"
+                }
                 className="cursor-pointer"
                 onClick={() => toggleTag(tag._id)}
               >
                 {tag.name}
-                {selectedTags.includes(tag._id) && (
+                {selectedTags.includes(tag.name) && (
                   <X className="ml-1 h-3 w-3" />
                 )}
               </Badge>
