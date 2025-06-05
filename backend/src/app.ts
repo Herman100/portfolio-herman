@@ -21,8 +21,8 @@ app.use(morganMiddleware);
 import healthcheckRoutes from "./routes/healthcheck.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import errorHandler from "./middleware/error.middleware.js";
-import blogRoutes from "./routes/blog-post.routes.js";
-import blogPostRoutes from "./routes/blog.routes.js";
+import blogPostRoutes from "./routes/blog-post.routes.js";
+import blogRoutes from "./routes/blog.routes.js";
 import uploadRoutes from "./routes/upload.route.js";
 
 // using routes

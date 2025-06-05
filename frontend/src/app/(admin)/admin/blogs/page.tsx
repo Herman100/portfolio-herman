@@ -16,22 +16,30 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { blogPostsService } from "@/services/blog/posts-service";
+import { useToast } from "@/hooks/use-toast";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 export default function BlogsPage() {
   const [blogs, setBlogs] = useState<PaginatedBlogPosts | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState<BlogPost | null>(null);
   const router = useRouter();
+  const { toast } = useToast();
 
   const fetchBlogs = async (page: number) => {
     try {
-      const response = await fetch(`/api/blogs?page=${page}&limit=10`);
-      const data = await response.json();
+      const data = await blogPostsService.getAll(page);
       setBlogs(data);
     } catch (error) {
       console.error("Error fetching blogs:", error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch all posts",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -43,12 +51,15 @@ export default function BlogsPage() {
 
   const handleDelete = async (blogId: string) => {
     try {
-      await fetch(`/api/blogs/${blogId}`, {
-        method: "DELETE",
-      });
+      await blogPostsService.delete(blogId);
       fetchBlogs(currentPage);
     } catch (error) {
       console.error("Error deleting blog:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete post",
+        variant: "destructive",
+      });
     } finally {
       setDeleteDialogOpen(false);
       setBlogToDelete(null);
@@ -65,7 +76,7 @@ export default function BlogsPage() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner size="lg" color="primary" />;
   }
 
   return (
@@ -78,35 +89,51 @@ export default function BlogsPage() {
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/* Show message if no blogs found */}
+      {blogs && blogs.blogs.length === 0 && (
+        <div className="text-center py-8">
+          <p className="text-gray-500">
+            No blogs found. Create your first blog!
+          </p>
+        </div>
+      )}
+
+      <div className="grid gap-4">
         {blogs?.blogs.map((blog: BlogPost) => (
           <Card key={blog._id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="text-xl">{blog.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
+            <div className="flex items-center p-4">
+              {blog.coverImage && (
+                <div className="w-32 h-24 mr-4 flex-shrink-0">
+                  <img
+                    src={blog.coverImage}
+                    alt={blog.title}
+                    className="w-full h-full object-cover rounded-md"
+                  />
+                </div>
+              )}
+              <div className="flex-grow">
+                <h3 className="text-xl font-semibold mb-2">{blog.title}</h3>
                 <p className="text-sm text-gray-500">
                   Created: {format(new Date(blog.createdAt), "PPP")}
                 </p>
-                <div className="flex justify-end space-x-2 mt-4">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleEdit(blog._id)}
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => openDeleteDialog(blog)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
               </div>
-            </CardContent>
+              <div className="flex space-x-2 ml-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleEdit(blog._id)}
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => openDeleteDialog(blog)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
           </Card>
         ))}
       </div>
@@ -115,20 +142,20 @@ export default function BlogsPage() {
         <div className="flex justify-center gap-2 mt-8">
           <Button
             variant="outline"
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+            disabled={currentPage === 0}
           >
             Previous
           </Button>
           <span className="py-2 px-4">
-            Page {currentPage} of {blogs.totalPages}
+            Page {currentPage + 1} of {blogs.totalPages}
           </span>
           <Button
             variant="outline"
             onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, blogs.totalPages))
+              setCurrentPage((prev) => Math.min(prev + 1, blogs.totalPages - 1))
             }
-            disabled={currentPage === blogs.totalPages}
+            disabled={currentPage === blogs.totalPages - 1}
           >
             Next
           </Button>

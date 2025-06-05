@@ -7,9 +7,15 @@ import {
 } from "@/types/blog";
 
 export const blogPostsService = {
+  // Get all blog public posts
+  getAllPublic: async (): Promise<PaginatedBlogPosts> => {
+    const response = await apiClient.get("/posts/public");
+    return response.data.data;
+  },
+
   // Get all blog posts
-  getAll: async (): Promise<BlogPost[]> => {
-    const response = await apiClient.get("/posts/public/posts");
+  getAll: async (page: number): Promise<PaginatedBlogPosts> => {
+    const response = await apiClient.get(`/posts?page=${page}&limit=10`);
     return response.data.data;
   },
 

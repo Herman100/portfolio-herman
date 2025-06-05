@@ -27,12 +27,25 @@ const blogPostController = {
     // Get all blog posts
     getAllBlogPosts: asyncHandler(
         async (req: Request, res: Response): Promise<void> => {
-            const blogPosts = await BlogPost.find().sort({ createdAt: -1 });
+            const { page = 0, limit = 10 } = req.params;
+
+            const total = await BlogPost.countDocuments();
+            const totalPages = Math.ceil(total / Number(limit));
+            const blogPosts = await BlogPost.find()
+                .skip(Number(page) * Number(limit))
+                .limit(Number(limit))
+                .sort({ createdAt: -1 });
 
             res.status(200).json(
                 new ApiResponse(
                     200,
-                    blogPosts,
+                    {
+                        blogs: blogPosts,
+                        total,
+                        page: Number(page) + 1,
+                        limit: Number(limit),
+                        totalPages: totalPages,
+                    },
                     "Blog posts retrieved successfully"
                 )
             );
