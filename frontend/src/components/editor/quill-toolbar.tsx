@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { IKContext, IKUpload } from "imagekitio-react";
 import { imagekitConfig, imagekitService } from "@/services/imagekit-service";
 import { Upload, Image, Video } from "lucide-react";
+import { useToast } from "../ui/use-toast";
 
 interface CustomQuillEditorProps {
   value?: string;
@@ -144,6 +145,7 @@ const ImageUploadComponent = React.forwardRef<
     { onUploadStart, onUploadProgress, onUploadComplete, onUploadError },
     ref
   ) => {
+    const { toast } = useToast();
     return (
       <IKUpload
         ref={ref}
@@ -152,6 +154,10 @@ const ImageUploadComponent = React.forwardRef<
         onSuccess={(res: ImageKitResponse) => onUploadComplete(res.url)}
         onError={(err: { message: string }) => {
           console.error("Image upload error:", err.message);
+          toast({
+            title: "Error",
+            description: "Image upload fail",
+          });
           onUploadError();
         }}
         folder="/blog-images"
@@ -179,6 +185,7 @@ const VideoUploadComponent = React.forwardRef<
     { onUploadStart, onUploadProgress, onUploadComplete, onUploadError },
     ref
   ) => {
+    const { toast } = useToast();
     return (
       <IKUpload
         ref={ref}
@@ -187,6 +194,10 @@ const VideoUploadComponent = React.forwardRef<
         onSuccess={(res: { url: string }) => onUploadComplete(res.url)}
         onError={(err: { message: string }) => {
           console.error("Video upload error:", err.message);
+          toast({
+            title: "Error",
+            description: "Video upload fail",
+          });
           onUploadError();
         }}
         folder="/blog-videos"
