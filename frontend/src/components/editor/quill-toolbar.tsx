@@ -233,8 +233,7 @@ const CustomQuillEditor: React.FC<CustomQuillEditorProps> = ({
       const index = range ? range.index : quill.getLength();
 
       if (type === "image") {
-        // Insert image with proper formatting
-        quill.insertEmbed(index, "image", url, "user");
+        quill.insertEmbed(index, "image", url);
         // Apply formatting after insertion
         quill.formatText(index, 1, {
           width: "100%",
@@ -244,7 +243,7 @@ const CustomQuillEditor: React.FC<CustomQuillEditorProps> = ({
         });
       } else {
         // For video, we'll insert HTML directly
-        quill.insertEmbed(index, "video", url, "user");
+        quill.insertEmbed(index, "video", url);
         // Apply formatting after insertion
         quill.formatText(index, 1, {
           controls: true,
@@ -321,6 +320,26 @@ const CustomQuillEditor: React.FC<CustomQuillEditorProps> = ({
   }, []);
 
   /*
+   * Quill formats
+   */
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "list",
+    "blockquote",
+    "code-block",
+    "align",
+    "link",
+    "image",
+    "video",
+  ];
+
+  /*
    * Quill modules configuration
    */
   const modules = {
@@ -345,27 +364,6 @@ const CustomQuillEditor: React.FC<CustomQuillEditorProps> = ({
       matchVisual: false,
     },
   };
-
-  /*
-   * Quill formats
-   */
-  const formats = [
-    "header",
-    "font",
-    "size",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "list",
-    "bullet",
-    "blockquote",
-    "code-block",
-    "align",
-    "link",
-    "image",
-    "video",
-  ];
 
   return (
     <div className={`custom-quill-editor ${className}`}>
@@ -410,7 +408,7 @@ const CustomQuillEditor: React.FC<CustomQuillEditorProps> = ({
           formats={formats}
           style={{
             height: "400px",
-            marginBottom: "42px", // Account for toolbar height
+            marginBottom: "42px",
           }}
         />
       </IKContext>
