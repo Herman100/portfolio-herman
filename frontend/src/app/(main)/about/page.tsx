@@ -13,8 +13,8 @@ import {
   BookOpen,
 } from "lucide-react";
 import Link from "next/link";
-import { lavishlyYours } from "@/lib/fonts/font";
 import { NavLink } from "@/components/home/navlink";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -81,14 +81,14 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <div className="relative">
-                  <div className="aspect-square rounded-b-[300px] bg-primary/20 dark:bg-primary/10 p-8 flex items-center justify-center">
-                    <div className="text-center">
-                      <Code className="h-16 w-16 mx-auto mb-4 text-primary" />
-                      <h3 className="text-xl font-bold mb-2">Problem Solver</h3>
-                      <p className="text-muted-foreground">
-                        Combining analytical thinking with creative solutions
-                      </p>
-                    </div>
+                  <div className="aspect-square rounded-br-[64px] rounded-tl-[64px]  bg-primary/20 dark:bg-primary/10 flex items-center justify-center overflow-hidden">
+                    <Image
+                      src={"/hermankb.png"}
+                      width={500}
+                      height={500}
+                      alt="Picture of Herman Kwamebour"
+                      className="object-cover"
+                    />
                   </div>
                 </div>
               </div>
