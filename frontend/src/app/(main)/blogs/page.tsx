@@ -62,11 +62,11 @@ export default function PublicBlogsPage() {
 
   useEffect(() => {
     setCurrentPage(0);
-    fetchBlogs(0, selectedCategory || undefined);
+    fetchBlogs(0, selectedCategory ?? undefined);
   }, [selectedCategory]);
 
   useEffect(() => {
-    fetchBlogs(currentPage, selectedCategory || undefined);
+    fetchBlogs(currentPage, selectedCategory ?? undefined);
   }, [currentPage]);
 
   if (isLoading) {
@@ -173,7 +173,7 @@ export default function PublicBlogsPage() {
                 </div>
 
                 {/* Content */}
-                <div className="md:w-3/5 flex flex-col justify-between py-6 px-4 items-start sm:items-center">
+                <div className="md:w-3/5 flex flex-col justify-around py-6 px-4 items-start sm:items-center">
                   <div className="md:w-3/5 flex flex-col sm:items-start">
                     {/* Meta Info */}
                     <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
