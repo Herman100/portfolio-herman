@@ -36,6 +36,7 @@ const formSchema = z.object({
   category: z.string().min(1, "Category is required"),
   tags: z.array(z.string()),
   coverImage: z.string().optional(),
+  author: z.string().min(1, "Author is required"),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -59,9 +60,9 @@ export default function EditorPage() {
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      category: "general",
+      category: "",
       tags: [],
-      content: "", // Initialize content
+      content: "",
     },
   });
 
@@ -174,6 +175,18 @@ export default function EditorPage() {
         </div>
 
         <div className="space-y-2">
+          <Label htmlFor="author">Author</Label>
+          <Input
+            id="author"
+            {...register("author")}
+            placeholder="Enter author name"
+          />
+          {errors.author && (
+            <p className="text-sm text-red-500">{errors.author.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
           <Label htmlFor="category">Category</Label>
           <Select
             onValueChange={(value: string) => setValue("category", value)}
@@ -184,7 +197,7 @@ export default function EditorPage() {
             </SelectTrigger>
             <SelectContent>
               {categories.map((category) => (
-                <SelectItem key={category._id} value={category._id}>
+                <SelectItem key={category._id} value={category.name}>
                   {category.name}
                 </SelectItem>
               ))}
