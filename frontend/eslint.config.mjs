@@ -14,7 +14,29 @@ const eslintConfig = [
   {
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
+
+      "@typescript-eslint/no-explicit-any": [
+        "warn",
+        {
+          ignoreRestArgs: true,
+        },
+      ],
+
+      "react/display-name": "off",
     },
+    overrides: [
+      {
+        files: [
+          "**/quill-*.ts",
+          "**/quill-*.tsx",
+          "**/*-editor.ts",
+          "**/*-editor.tsx",
+        ],
+        rules: {
+          "@typescript-eslint/no-explicit-any": "off",
+        },
+      },
+    ],
   },
 ];
 
