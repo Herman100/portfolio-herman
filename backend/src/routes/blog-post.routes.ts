@@ -4,22 +4,15 @@ import { verifyAccessToken } from "../middleware/admin.middleware.js";
 
 const router = express.Router();
 
-// Create a new blog post
-router.post("/", blogPostController.createBlogPost, verifyAccessToken);
+// Public routes
+router.get("/public", blogPostController.getAllBlogPosts);
+router.get("/public/:id", blogPostController.getBlogPostById);
 
-// Get all blog posts
-router.get("/", blogPostController.getAllBlogPosts, verifyAccessToken);
-
-// Get a specific blog post by ID
-router.get("/:id", blogPostController.getBlogPostById, verifyAccessToken);
-
-// Update a blog post
-router.put("/:id", blogPostController.updateBlogPost, verifyAccessToken);
-
-// Delete a blog post
-router.delete("/:id", blogPostController.deleteBlogPost, verifyAccessToken);
-
-//public routes
-router.get("/public/blogs", blogPostController.getAllBlogPosts);
+// Protected routes
+router.post("/", verifyAccessToken, blogPostController.createBlogPost);
+router.get("/", verifyAccessToken, blogPostController.getAllBlogPosts);
+router.get("/:id", verifyAccessToken, blogPostController.getBlogPostById);
+router.put("/:id", verifyAccessToken, blogPostController.updateBlogPost);
+router.delete("/:id", verifyAccessToken, blogPostController.deleteBlogPost);
 
 export default router;

@@ -16,6 +16,7 @@ router.get(
     verifyAccessToken,
     blogCategoryController.getAllCategories
 );
+router.get("/categories/public", blogCategoryController.getAllCategories);
 router.get(
     "/categories/:id",
     verifyAccessToken,

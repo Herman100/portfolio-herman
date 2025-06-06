@@ -8,7 +8,8 @@ const blogPostController = {
     // Create a new blog post
     createBlogPost: asyncHandler(
         async (req: Request, res: Response): Promise<void> => {
-            const { title, content, category, tags, coverImage } = req.body;
+            const { title, content, category, tags, coverImage, author } =
+                req.body;
 
             const blogPost = await BlogPost.create({
                 title,
@@ -16,6 +17,7 @@ const blogPostController = {
                 category,
                 tags,
                 coverImage,
+                author,
             });
 
             res.status(201).json(
@@ -27,12 +29,28 @@ const blogPostController = {
     // Get all blog posts
     getAllBlogPosts: asyncHandler(
         async (req: Request, res: Response): Promise<void> => {
-            const blogPosts = await BlogPost.find().sort({ createdAt: -1 });
+            const page = Number(req.query.page) || 0;
+            const limit = Number(req.query.limit) || 10;
+            const category = req.query.category as string;
+            const query = category ? { category } : {};
+
+            const total = await BlogPost.countDocuments(query);
+            const totalPages = Math.ceil(total / limit);
+            const blogPosts = await BlogPost.find(query)
+                .skip(page * limit)
+                .limit(limit)
+                .sort({ createdAt: -1 });
 
             res.status(200).json(
                 new ApiResponse(
                     200,
-                    blogPosts,
+                    {
+                        blogs: blogPosts,
+                        total,
+                        page,
+                        limit,
+                        totalPages,
+                    },
                     "Blog posts retrieved successfully"
                 )
             );
@@ -63,11 +81,18 @@ const blogPostController = {
     // Update blog post
     updateBlogPost: asyncHandler(
         async (req: Request, res: Response): Promise<void> => {
-            const { title, content, category, tags, coverImage } = req.body;
+            const updateData = {
+                title: req.body.title,
+                content: req.body.content,
+                category: req.body.category,
+                tags: req.body.tags,
+                coverImage: req.body.coverImage,
+                author: req.body.author,
+            };
 
             const blogPost = await BlogPost.findByIdAndUpdate(
                 req.params.id,
-                { title, content, category, tags, coverImage },
+                updateData,
                 { new: true, runValidators: true }
             );
 

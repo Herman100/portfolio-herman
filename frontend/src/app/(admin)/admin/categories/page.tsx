@@ -65,7 +65,11 @@ export default function CategoriesPage() {
   };
 
   if (isLoading) {
-    return <LoadingSpinner size="lg" color="primary" />;
+    return (
+      <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        return <LoadingSpinner size="parent" color="primary" />;
+      </div>
+    );
   }
 
   return (

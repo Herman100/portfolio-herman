@@ -6,6 +6,7 @@ export interface IBlogPost extends Document {
     category: string;
     tags: string[];
     content: string;
+    author: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -35,6 +36,11 @@ const BlogPostSchema: Schema = new Schema(
         content: {
             type: String,
             required: true,
+        },
+        author: {
+            type: String,
+            required: true,
+            trim: true,
         },
     },
     {

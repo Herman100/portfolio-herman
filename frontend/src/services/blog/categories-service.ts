@@ -6,6 +6,12 @@ import {
 } from "@/types/category";
 
 export const categoriesService = {
+  // Get all categories Public
+  getAllPublicTags: async (): Promise<Category[]> => {
+    const response = await apiClient.get("/blogs/categories/public");
+    return response.data.data;
+  },
+
   // Get all categories
   getAll: async (): Promise<Category[]> => {
     const response = await apiClient.get("/blogs/categories");
