@@ -104,7 +104,7 @@ const CustomToolbar = ({
       title="Upload Image"
       type="button"
     >
-      <Image className="w-4 h-4" />
+      <Image className="w-4 h-4" aria-label="Upload image" />
     </button>
 
     <button
@@ -169,6 +169,8 @@ const ImageUploadComponent = React.forwardRef<
   }
 );
 
+ImageUploadComponent.displayName = "ImageUploadComponent";
+
 /*
  * Custom Video Upload Component
  */
@@ -208,6 +210,8 @@ const VideoUploadComponent = React.forwardRef<
     );
   }
 );
+
+VideoUploadComponent.displayName = "VideoUploadComponent";
 
 /*
  * Main Custom Quill Editor Component
