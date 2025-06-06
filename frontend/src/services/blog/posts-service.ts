@@ -24,6 +24,11 @@ export const blogPostsService = {
     return response.data.data;
   },
 
+  getPublicBlogById: async (id: string): Promise<BlogPost> => {
+    const response = await apiClient.get(`/posts/public/${id}`);
+    return response.data.data;
+  },
+
   // Get all blog posts
   getAll: async (page: number): Promise<PaginatedBlogPosts> => {
     const response = await apiClient.get(`/posts?page=${page}&limit=10`);

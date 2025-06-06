@@ -9,6 +9,7 @@ import LoadingSpinner from "@/components/ui/loading-spinner";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
 
 export default function BlogPostPage() {
   const [blog, setBlog] = useState<BlogPost | null>(null);
@@ -20,7 +21,9 @@ export default function BlogPostPage() {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const data = await blogPostsService.getById(params.id as string);
+        const data = await blogPostsService.getPublicBlogById(
+          params.id as string
+        );
         setBlog(data);
       } catch (error) {
         console.error("Error fetching blog:", error);
@@ -69,8 +72,10 @@ export default function BlogPostPage() {
         <article>
           {blog.coverImage && (
             <div className="aspect-video w-full mb-8">
-              <img
+              <Image
                 src={blog.coverImage}
+                width={500}
+                height={500}
                 alt={blog.title}
                 className="w-full h-full object-cover rounded-lg"
               />
@@ -99,7 +104,7 @@ export default function BlogPostPage() {
           </header>
 
           <div
-            className="prose prose-lg max-w-none"
+            className="prose prose-lg max-w-none mb-[100px]"
             dangerouslySetInnerHTML={{ __html: blog.content }}
           />
         </article>
