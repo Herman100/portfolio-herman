@@ -56,8 +56,8 @@ const validateAdmin = (admin: any) => {
         throw new ApiErrorHandler(
             400,
             error.details[0].message,
-            "Validation Error",
-            error.details
+            ["Validation Error"],
+            `${error.details}`
         );
     }
 };
