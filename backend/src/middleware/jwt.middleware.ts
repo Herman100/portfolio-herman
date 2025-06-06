@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { AuthRequest, RefreshTokenPayload } from "../types/jwt.types.js";
+import { RefreshTokenPayload } from "../types/jwt.types.js";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -45,7 +46,7 @@ export const verifyRefreshToken = (
 
 // Verify JWT token middleware
 export const verifyToken = (
-    req: AuthRequest,
+    req: Request,
     res: Response,
     next: NextFunction
 ) => {
@@ -75,6 +76,7 @@ export const verifyToken = (
 
         // Verify and decode the token
         const decoded = jwt.verify(token, access_secret) as {
+            _id: mongoose.Types.ObjectId;
             email: string;
             role: string;
             iat?: number;
