@@ -8,8 +8,19 @@ import {
 
 export const blogPostsService = {
   // Get all blog public posts
-  getAllPublic: async (): Promise<PaginatedBlogPosts> => {
-    const response = await apiClient.get("/posts/public");
+  getAllPublic: async (
+    page: number = 0,
+    limit: number = 10,
+    category?: string
+  ): Promise<PaginatedBlogPosts> => {
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+    if (category) {
+      params.append("category", category);
+    }
+    const response = await apiClient.get(`/posts/public?${params.toString()}`);
     return response.data.data;
   },
 

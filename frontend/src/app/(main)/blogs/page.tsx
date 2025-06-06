@@ -7,20 +7,42 @@ import { BlogPost, PaginatedBlogPosts } from "@/types/blog";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { blogPostsService } from "@/services/blog/posts-service";
+import { categoriesService } from "@/services/blog/categories-service";
 import { useToast } from "@/hooks/use-toast";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight, User } from "lucide-react";
+import { Category } from "@/types/category";
 
 export default function PublicBlogsPage() {
   const [blogs, setBlogs] = useState<PaginatedBlogPosts | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const router = useRouter();
   const { toast } = useToast();
 
-  const fetchBlogs = async (page: number) => {
+  const fetchCategories = async () => {
     try {
-      const data = await blogPostsService.getAllPublic();
+      const data = await categoriesService.getAllPublicTags();
+      setCategories(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch categories",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const fetchBlogs = async (page: number, category?: string) => {
+    try {
+      const data = await blogPostsService.getAllPublic(
+        page,
+        10,
+        category?.toLocaleLowerCase()
+      );
       setBlogs(data);
     } catch (error) {
       console.error("Error fetching blogs:", error);
@@ -35,7 +57,16 @@ export default function PublicBlogsPage() {
   };
 
   useEffect(() => {
-    fetchBlogs(currentPage);
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    setCurrentPage(0);
+    fetchBlogs(0, selectedCategory || undefined);
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    fetchBlogs(currentPage, selectedCategory || undefined);
   }, [currentPage]);
 
   if (isLoading) {
@@ -59,6 +90,39 @@ export default function PublicBlogsPage() {
           </p>
         </div>
 
+        {/* Category Filter Buttons */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <div className="flex flex-wrap gap-3 justify-center pb-6 border-b border-border/50">
+            <Button
+              variant={selectedCategory === null ? "default" : "outline"}
+              onClick={() => setSelectedCategory(null)}
+              className={`${
+                selectedCategory === null
+                  ? "bg-primary text-primary-foreground"
+                  : "border-border hover:bg-muted"
+              } transition-all duration-200`}
+            >
+              All Categories
+            </Button>
+            {categories.map((category) => (
+              <Button
+                key={category._id}
+                variant={
+                  selectedCategory === category.name ? "default" : "outline"
+                }
+                onClick={() => setSelectedCategory(category.name)}
+                className={`${
+                  selectedCategory === category.name
+                    ? "bg-primary text-primary-foreground"
+                    : "border-border hover:bg-muted"
+                } transition-all duration-200`}
+              >
+                {category.name}
+              </Button>
+            ))}
+          </div>
+        </div>
+
         {/* No blogs message */}
         {blogs && blogs.blogs.length === 0 && (
           <div className="text-center py-16">
@@ -66,10 +130,12 @@ export default function PublicBlogsPage() {
               <Calendar className="w-12 h-12 text-muted-foreground" />
             </div>
             <h3 className="text-2xl font-semibold text-foreground mb-2">
-              No posts yet
+              No posts found
             </h3>
             <p className="text-muted-foreground">
-              Check back soon for new content!
+              {selectedCategory
+                ? `No posts found in ${selectedCategory} category`
+                : "Check back soon for new content!"}
             </p>
           </div>
         )}
@@ -79,12 +145,12 @@ export default function PublicBlogsPage() {
           {blogs?.blogs.map((blog: BlogPost, index: number) => (
             <Card
               key={blog._id}
-              className="group overflow-hidden bg-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+              className="group overflow-hidden bg-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer py-0"
               onClick={() => router.push(`/blogs/${blog._id}`)}
             >
               <div className="flex flex-col md:flex-row">
                 {/* Cover Image */}
-                <div className="md:w-2/5 h-64 md:h-auto relative overflow-hidden">
+                <div className="md:w-2/5 h-48 md:h-auto relative overflow-hidden">
                   {blog.coverImage ? (
                     <img
                       src={blog.coverImage}
@@ -107,8 +173,8 @@ export default function PublicBlogsPage() {
                 </div>
 
                 {/* Content */}
-                <div className="md:w-3/5 p-8 flex flex-col justify-between">
-                  <div>
+                <div className="md:w-3/5 flex flex-col justify-between py-6 px-4 items-start sm:items-center">
+                  <div className="md:w-3/5 flex flex-col sm:items-start">
                     {/* Meta Info */}
                     <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
@@ -121,6 +187,10 @@ export default function PublicBlogsPage() {
                         <Clock className="w-4 h-4" />
                         <span>5 min read</span>
                       </div>
+                      <div className="flex items-center gap-1">
+                        <User className="w-4 h-4" />
+                        <span>{blog.author || "Herman"}</span>
+                      </div>
                     </div>
 
                     {/* Title */}
@@ -132,13 +202,13 @@ export default function PublicBlogsPage() {
                     <div className="text-muted-foreground mb-6 line-clamp-3">
                       <p>
                         {blog.content.replace(/<[^>]*>/g, "").slice(0, 150)}
-                        {blog.content.length > 150 ? "..." : ""}
+                        {blog.content.length > 64 ? "..." : ""}
                       </p>
                     </div>
                   </div>
 
                   {/* Tags and Read More */}
-                  <div>
+                  <div className="md:w-3/5 flex flex-col sm:items-start">
                     {/* Tags */}
                     {blog.tags && blog.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-4">
@@ -170,13 +240,13 @@ export default function PublicBlogsPage() {
           ))}
         </div>
 
-        {/*  Pagination */}
+        {/* Pagination */}
         {blogs && blogs.totalPages > 1 && (
           <div className="flex justify-center items-center gap-2 mt-16">
             <Button
               variant="outline"
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+              disabled={currentPage === 0}
               className="hover:bg-muted"
             >
               Previous
@@ -184,11 +254,11 @@ export default function PublicBlogsPage() {
 
             {/* Page numbers */}
             <div className="flex gap-1 mx-4">
-              {Array.from({ length: blogs.totalPages }, (_, i) => i + 1).map(
+              {Array.from({ length: blogs.totalPages }, (_, i) => i).map(
                 (pageNum) => {
                   if (
-                    pageNum === 1 ||
-                    pageNum === blogs.totalPages ||
+                    pageNum === 0 ||
+                    pageNum === blogs.totalPages - 1 ||
                     (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
                   ) {
                     return (
@@ -205,7 +275,7 @@ export default function PublicBlogsPage() {
                             : "hover:bg-muted"
                         }
                       >
-                        {pageNum}
+                        {pageNum + 1}
                       </Button>
                     );
                   } else if (
@@ -229,9 +299,11 @@ export default function PublicBlogsPage() {
             <Button
               variant="outline"
               onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, blogs.totalPages))
+                setCurrentPage((prev) =>
+                  Math.min(prev + 1, blogs.totalPages - 1)
+                )
               }
-              disabled={currentPage === blogs.totalPages}
+              disabled={currentPage === blogs.totalPages - 1}
               className="hover:bg-muted"
             >
               Next

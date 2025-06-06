@@ -1,28 +1,30 @@
-export type BlogPost = {
+export interface BlogPost {
   _id: string;
   title: string;
-  content: string;
   coverImage?: string;
   category: string;
   tags: string[];
-  createdAt: Date;
-  updatedAt: Date;
-};
+  content: string;
+  author: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
-export type CreateBlogPostDto = {
+export interface CreateBlogPostDto {
   title: string;
-  content: string;
   coverImage?: string;
   category: string;
   tags: string[];
-};
+  content: string;
+  author: string;
+}
 
-export type UpdateBlogPostDto = Partial<CreateBlogPostDto>;
+export interface UpdateBlogPostDto extends Partial<CreateBlogPostDto> {}
 
-export type PaginatedBlogPosts = {
+export interface PaginatedBlogPosts {
   blogs: BlogPost[];
   total: number;
   page: number;
   limit: number;
   totalPages: number;
-};
+}
