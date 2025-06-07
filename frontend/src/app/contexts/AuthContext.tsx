@@ -18,7 +18,7 @@ interface AuthContextType {
   accessToken: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  isInitialized: boolean; // New flag to track if auth check is complete
+  isInitialized: boolean;
 
   // Actions
   login: (
@@ -46,32 +46,48 @@ export const AuthContextProvider = ({
   // Computed property
   const isAuthenticated = !!user && !!accessToken;
 
-  // Request interceptor to add auth header
-  apiClient.interceptors.request.use((config) => {
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  });
-
-  // Response interceptor for token refresh
-  apiClient.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      if (error.response?.status === 401 && accessToken) {
-        try {
-          await refreshAuth();
-          // Retry the original request
-          error.config.headers.Authorization = `Bearer ${accessToken}`;
-          return apiClient.request(error.config);
-        } catch (refreshError) {
-          console.error("Token refresh failed:", refreshError);
-          logout();
-        }
+  // Setup axios interceptors
+  useEffect(() => {
+    // Request interceptor to add auth header
+    const requestInterceptor = apiClient.interceptors.request.use((config) => {
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
-      return Promise.reject(error);
-    }
-  );
+      return config;
+    });
+
+    // Response interceptor for token refresh
+    const responseInterceptor = apiClient.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config;
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+
+          try {
+            await refreshAuth();
+            // Get the new token and retry the request
+            const newToken = accessToken; // This will be updated by refreshAuth
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            return apiClient.request(originalRequest);
+          } catch (refreshError) {
+            console.error("Token refresh failed:", refreshError);
+            await logout();
+            return Promise.reject(refreshError);
+          }
+        }
+
+        return Promise.reject(error);
+      }
+    );
+
+    // Cleanup interceptors on unmount
+    return () => {
+      apiClient.interceptors.request.eject(requestInterceptor);
+      apiClient.interceptors.response.eject(responseInterceptor);
+    };
+  }, [accessToken]); // Re-setup when token changes
 
   const login = async (
     email: string,
@@ -86,21 +102,14 @@ export const AuthContextProvider = ({
       });
 
       if (response.data.success) {
-        const { accessToken: token } = response.data.data;
+        const { accessToken: token, user: userData } = response.data.data;
 
         console.log("Login successful, access token:", token);
 
-        // Set access token
+        // Set access token and user data
         setAccessToken(token);
+        setUser(userData);
 
-        // Fetch user profile with the new token
-        const userResponse = await apiClient.get("/admin/profile", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (userResponse.data.success) {
-          setUser(userResponse.data.data);
-        }
         // Redirect to admin dashboard
         router.push("/admin/dashboard");
 
@@ -110,7 +119,7 @@ export const AuthContextProvider = ({
       }
     } catch (error) {
       const message = axios.isAxiosError(error)
-        ? error.response?.data?.message
+        ? error.response?.data?.message || "Login failed"
         : "Login failed";
       return { success: false, message };
     } finally {
@@ -139,16 +148,27 @@ export const AuthContextProvider = ({
       const response = await apiClient.post("/admin/refresh");
 
       if (response.data.success) {
-        const { accessToken: newToken } = response.data.data;
+        const { accessToken: newToken, user: userData } = response.data.data;
         setAccessToken(newToken);
 
-        // Optionally refresh user data
-        const userResponse = await apiClient.get("/admin/profile", {
-          headers: { Authorization: `Bearer ${newToken}` },
-        });
-        if (userResponse.data.success) {
-          setUser(userResponse.data.data);
+        // Update user data if provided
+        if (userData) {
+          setUser(userData);
+        } else {
+          // Fetch user profile if not provided
+          try {
+            const userResponse = await apiClient.get("/admin/profile", {
+              headers: { Authorization: `Bearer ${newToken}` },
+            });
+            if (userResponse.data.success) {
+              setUser(userResponse.data.data);
+            }
+          } catch (profileError) {
+            console.error("Failed to fetch user profile:", profileError);
+          }
         }
+      } else {
+        throw new Error("Refresh token failed");
       }
     } catch (error) {
       console.error("Token refresh failed:", error);
@@ -156,7 +176,7 @@ export const AuthContextProvider = ({
       setAccessToken(null);
       throw error;
     }
-  }, [apiClient]);
+  }, []);
 
   // Check authentication status on initial load
   useEffect(() => {
@@ -164,30 +184,18 @@ export const AuthContextProvider = ({
       try {
         setIsLoading(true);
         await refreshAuth();
+        console.log("Authentication check successful");
       } catch (error) {
-        console.error("Error during authentication check:", error);
+        console.log("Authentication check failed:", error);
+        // Don't treat this as an error - user just isn't logged in
       } finally {
         setIsLoading(false);
-        setIsInitialized(true); // Mark as initialized regardless of success/failure
+        setIsInitialized(true);
       }
     };
 
     checkAuth();
-  }, []);
-
-  // Auto-refresh token before it expires
-  // useEffect(() => {
-  //   if (!accessToken || !isInitialized) return;
-
-  //   // Refresh token every 14 minutes (assuming 15-minute expiry)
-  //   const interval = setInterval(() => {
-  //     refreshAuth().catch(() => {
-  //       console.log("Auto-refresh failed");
-  //     });
-  //   }, 14 * 60 * 1000);
-
-  //   return () => clearInterval(interval);
-  // }, [accessToken, refreshAuth, isInitialized]);
+  }, [refreshAuth]);
 
   const values = {
     user,
