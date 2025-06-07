@@ -10,6 +10,12 @@ const allowedOrigins = process.env.FRONTEND_URL?.split(",") || [
     "http://localhost:3001",
 ];
 
+app.use((req, res, next) => {
+    console.log("Origin:", req.headers.origin);
+    console.log("Cookies:", req.headers.cookie);
+    next();
+});
+
 app.use(
     cors({
         origin: function (origin, callback) {
