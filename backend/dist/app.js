@@ -3,8 +3,23 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import morganMiddleware from "./middleware/morgan.middleware.js";
 const app = express();
+const allowedOrigins = process.env.FRONTEND_URL?.split(",") || [
+    "http://localhost:3000",
+];
 app.use(cors({
-    origin: process.env.FRONTEND_URL ?? "http://localhost:3000",
+    origin: function (origin, callback) {
+        if (!origin)
+            return callback(null, true);
+        // Check against allowed origins
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        // Allow Vercel deployments
+        if (origin.includes("vercel.app")) {
+            return callback(null, true);
+        }
+        return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
 }));
 app.use(cookieParser());
