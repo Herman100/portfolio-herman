@@ -5,13 +5,13 @@ import { connectDB } from "./db/index.js";
 // Configure app
 
 dotenv.config();
-const PORT = process.env.PORT ?? 3000;
+const PORT = process.env.PORT ?? 5000;
 
 // Middleware
 
 // Routes
 app.get("/", (req, res) => {
-    res.send("Hello World");
+    res.send("Welcome to the portfolio of Herman KB");
 });
 
 // Start the server
