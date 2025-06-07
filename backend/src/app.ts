@@ -7,6 +7,7 @@ const app = express();
 
 const allowedOrigins = process.env.FRONTEND_URL?.split(",") || [
     "http://localhost:3000",
+    "http://localhost:3001",
 ];
 
 app.use(
@@ -16,11 +17,6 @@ app.use(
 
             // Check against allowed origins
             if (allowedOrigins.includes(origin)) {
-                return callback(null, true);
-            }
-
-            // Allow Vercel deployments
-            if (origin.includes("vercel.app")) {
                 return callback(null, true);
             }
 
