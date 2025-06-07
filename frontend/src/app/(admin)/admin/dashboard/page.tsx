@@ -11,9 +11,75 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
+import { useEffect, useState } from "react";
+import { blogPostsService } from "@/services/blog/posts-service";
+import { categoriesService } from "@/services/blog/categories-service";
+import { healthcheckService } from "@/services/healthcheck-service";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FileText, FolderTree, Users, Activity } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+interface DashboardStats {
+  totalPosts: number;
+  totalCategories: number;
+  systemUptime: number;
+  recentActivity: {
+    title: string;
+    date: string;
+  }[];
+}
 
 export default function Page() {
   const { user } = useAuth();
+  const [stats, setStats] = useState<DashboardStats>({
+    totalPosts: 0,
+    totalCategories: 0,
+    systemUptime: 0,
+    recentActivity: [],
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        // Fetch blog posts
+        const posts = await blogPostsService.getAll(0);
+        // Fetch categories
+        const categories = await categoriesService.getAll();
+        // Fetch system health
+        const healthData = await healthcheckService.getSystemHealth();
+
+        setStats({
+          totalPosts: posts.total,
+          totalCategories: categories.length,
+          systemUptime: healthData.uptime,
+          recentActivity: posts.blogs.slice(0, 5).map((post) => ({
+            title: post.title,
+            date: new Date(post.createdAt).toLocaleDateString(),
+          })),
+        });
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch dashboard data",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [toast]);
+
+  const formatUptime = (seconds: number) => {
+    const days = Math.floor(seconds / 86400);
+    const hours = Math.floor((seconds % 86400) / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${days}d ${hours}h ${minutes}m`;
+  };
 
   return (
     <>
@@ -48,23 +114,70 @@ export default function Page() {
         </div>
 
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-            <span className="text-sm text-muted-foreground">
-              Analytics Card
-            </span>
-          </div>
-          <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-            <span className="text-sm text-muted-foreground">
-              Statistics Card
-            </span>
-          </div>
-          <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-            <span className="text-sm text-muted-foreground">Reports Card</span>
-          </div>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
+              <FileText className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.totalPosts}</div>
+              <p className="text-xs text-muted-foreground">
+                Total blog posts published
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Categories</CardTitle>
+              <FolderTree className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.totalCategories}</div>
+              <p className="text-xs text-muted-foreground">
+                Active blog categories
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                System Uptime
+              </CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {formatUptime(stats.systemUptime)}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Current system uptime
+              </p>
+            </CardContent>
+          </Card>
         </div>
-        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min flex items-center justify-center">
-          <span className="text-muted-foreground">Main Content Area</span>
-        </div>
+
+        <Card className="col-span-3">
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {stats.recentActivity.map((activity, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                    <span>{activity.title}</span>
+                  </div>
+                  <span className="text-sm text-muted-foreground">
+                    {activity.date}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </>
   );
