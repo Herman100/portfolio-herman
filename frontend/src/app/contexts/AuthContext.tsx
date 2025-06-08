@@ -88,8 +88,6 @@ export const AuthContextProvider = ({
       if (response.data.success) {
         const { accessToken: token } = response.data.data;
 
-        console.log("Login successful, access token:", token);
-
         // Set access token
         setAccessToken(token);
 
@@ -174,20 +172,6 @@ export const AuthContextProvider = ({
 
     checkAuth();
   }, []);
-
-  // Auto-refresh token before it expires
-  // useEffect(() => {
-  //   if (!accessToken || !isInitialized) return;
-
-  //   // Refresh token every 14 minutes (assuming 15-minute expiry)
-  //   const interval = setInterval(() => {
-  //     refreshAuth().catch(() => {
-  //       console.log("Auto-refresh failed");
-  //     });
-  //   }, 14 * 60 * 1000);
-
-  //   return () => clearInterval(interval);
-  // }, [accessToken, refreshAuth, isInitialized]);
 
   const values = {
     user,
