@@ -108,8 +108,6 @@ const adminController = {
         async (req: Request, res: Response): Promise<void> => {
             const { refreshToken } = req.cookies;
 
-            console.log(refreshToken);
-
             if (!refreshToken) {
                 throw new ApiErrorHandler(401, "Refresh token is required", [
                     "Authentication Error",
