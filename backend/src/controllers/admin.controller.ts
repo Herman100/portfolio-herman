@@ -10,11 +10,19 @@ import {
 import bcrypt from "bcryptjs";
 import { verifyRefreshToken } from "../middleware/jwt.middleware.js";
 
+interface AdminRegistrationBody {
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+}
+
 const adminController = {
     // Register a new admin
     register: asyncHandler(
         async (req: Request, res: Response): Promise<void> => {
-            const { name, email, password, role } = req.body;
+            const { name, email, password, role }: AdminRegistrationBody =
+                req.body;
 
             // Check if the admin already exists
             const existingAdmin = await Admin.findOne({ role: "admin" });
@@ -107,8 +115,6 @@ const adminController = {
     refreshToken: asyncHandler(
         async (req: Request, res: Response): Promise<void> => {
             const { refreshToken } = req.cookies;
-
-            console.log(refreshToken);
 
             if (!refreshToken) {
                 throw new ApiErrorHandler(401, "Refresh token is required", [
