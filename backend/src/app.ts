@@ -13,6 +13,10 @@ const allowedOrigins = process.env.FRONTEND_URL?.split(",") || [
 app.use((req, res, next) => {
     console.log("Origin:", req.headers.origin);
     console.log("Cookies:", req.headers.cookie);
+    res.json({
+        origin: req.headers.origin,
+        cookies: req.headers.cookie,
+    });
     next();
 });
 
