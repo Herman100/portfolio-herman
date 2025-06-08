@@ -25,7 +25,7 @@ export const imagekitService = {
   }> => {
     try {
       const response = await apiClient.get("/imagekit/upload-image-video");
-      console.log(response.data);
+
       const { signature, token, expire } = response.data;
       return { signature, token, expire };
     } catch (error) {
