@@ -30,16 +30,6 @@ app.use(
     })
 );
 
-app.use((req, res, next) => {
-    console.log("Origin:", req.headers.origin);
-    console.log("Cookies:", req.headers.cookie);
-    res.json({
-        origin: req.headers.origin,
-        cookies: req.headers.cookie,
-    });
-    next();
-});
-
 app.use(cookieParser());
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
