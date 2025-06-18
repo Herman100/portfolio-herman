@@ -7,7 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: "Herman Kwamebour | Portfolio",
+  title: "Herman <Fullsack Engineer / Geoscientist>",
   description:
     "Portfolio of Herman Kwamebour - Software Engineer and Geoscientist",
 };
